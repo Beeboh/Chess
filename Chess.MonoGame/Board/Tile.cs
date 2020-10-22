@@ -1,11 +1,12 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Chess.MonoGame.Pieces;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Chess.MonoGame
+namespace Chess.MonoGame.Board
 {
     public class Tile
     {
@@ -25,7 +26,7 @@ namespace Chess.MonoGame
         public void AttachPiece(ChessPiece piece)
         {
             Piece = piece;
-            Piece.SetPosition(Column, Row);
+            Piece.SetPosition(Row, Column);
         }
         public void DetachPiece()
         {

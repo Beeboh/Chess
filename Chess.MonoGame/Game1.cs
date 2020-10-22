@@ -1,4 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Chess.MonoGame.Board;
+using Chess.MonoGame.Factories;
+using Chess.MonoGame.Moves;
+using Chess.MonoGame.Pieces;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
@@ -17,6 +21,10 @@ namespace Chess.MonoGame
         PieceTexturePack PieceTextures;
         BoardTexturePack BoardTextures;
         ChessBoard Board;
+
+        MouseState PreviousMouseState;
+        ChessPiece SelectedPiece;
+        
 
 
         public Game1()
@@ -38,7 +46,27 @@ namespace Chess.MonoGame
         protected override void Initialize()
         {
             base.Initialize();
-            Board = new StandardBoard(Point.Zero, BoardTextures, PieceTextures);
+            ChessBoardFactory StandardBoardFactory = new StandardBoardFactory(BoardTextures, PieceTextures);
+            Board = StandardBoardFactory.GetBoard(Point.Zero);
+            PreviousMouseState = Mouse.GetState();
+            //debug. remember to (maybe) change the row/column of movementmove to private//
+            //foreach(Tile tile in Board.Tiles)
+            //{
+            //    if (!tile.IsVacant)
+            //    {
+            //        System.Diagnostics.Debug.WriteLine("{0} ({1},{2}):", tile.Piece.GetType(), tile.Piece.Row,tile.Piece.Column);
+            //        ReadOnlyCollection<Move> Moves = tile.Piece.GetCandidateMoves(Board);
+            //        foreach(Move move in Moves)
+            //        {
+            //            if (move is MovementMove)
+            //            {
+            //                MovementMove movement = move as MovementMove;
+            //                System.Diagnostics.Debug.WriteLine("({0},{1})", movement.NewRow, movement.NewColumn);
+            //            }
+                        
+            //        }
+            //    }
+            //}
         }
 
         /// <summary>
@@ -88,10 +116,42 @@ namespace Chess.MonoGame
         protected override void Update(GameTime gameTime)
         {
             MouseState mouseState = Mouse.GetState();
-            if (mouseState.LeftButton == ButtonState.Pressed)
+            if (mouseState.LeftButton == ButtonState.Pressed && PreviousMouseState.LeftButton == ButtonState.Released)
             {
-                System.Diagnostics.Debug.WriteLine(mouseState.X + "," + mouseState.Y);
+                Point MousePosition = new Point(mouseState.X, mouseState.Y);
+                Point MousePositionOnBoard = MousePosition - Board.Origin;
+                int SelectedColumn = MousePositionOnBoard.X / Board.TileWidth;
+                int SelectedRow = MousePositionOnBoard.Y / Board.TileHeight;
+                if (Board.ValidTile(SelectedRow, SelectedColumn))
+                {
+                    Tile SelectedTile = Board[SelectedRow, SelectedColumn];
+
+                    if (SelectedPiece == null)
+                    {
+                        if (!SelectedTile.IsVacant)
+                        {
+                            SelectedPiece = SelectedTile.Piece;
+                            ReadOnlyCollection<Move> Moves = SelectedPiece.GetCandidateMoves(Board);
+                            foreach (Move move in Moves)
+                            {
+                                System.Diagnostics.Debug.WriteLine("({0},{1})", move.TargetRow, move.TargetColumn);
+                            }
+                            System.Diagnostics.Debug.WriteLine("");
+                        }
+                    }
+                    else
+                    {
+                        ReadOnlyCollection<Move> CandidateMoves = SelectedPiece.GetCandidateMoves(Board);
+                        Move SelectedMove = CandidateMoves.Where(m => m.Piece == SelectedPiece && m.TargetRow == SelectedRow && m.TargetColumn == SelectedColumn).FirstOrDefault();
+                        if (SelectedMove != null)
+                        {
+                            SelectedMove.Execute();
+                        }
+                        SelectedPiece = null;
+                    }
+                }
             }
+            PreviousMouseState = mouseState;
             base.Update(gameTime);
         }
 

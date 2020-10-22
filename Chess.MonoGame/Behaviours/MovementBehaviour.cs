@@ -1,17 +1,21 @@
-﻿using System;
+﻿using Chess.MonoGame.Board;
+using Chess.MonoGame.Moves;
+using Chess.MonoGame.Pieces;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Chess.MonoGame
+namespace Chess.MonoGame.Behaviours
 {
-    public class MovementBehaviour : PieceBehaviour
+    public class MovementBehaviour : IPieceBehaviour
     {
         public MovementBehaviour(int baseStepX, int baseStepY, int maxSteps)
         {
             BaseStepX = baseStepX;
-            BaseStepY = BaseStepY;
+            BaseStepY = baseStepY;
             MaxSteps = maxSteps;
         }
         public int BaseStepX { get; }
@@ -20,7 +24,7 @@ namespace Chess.MonoGame
 
         public int MaxSteps { get; }
 
-        public List<Move> GetCandidateMoves(ChessBoard board, ChessPiece piece)
+        public ReadOnlyCollection<Move> GetCandidateMoves(ChessBoard board, ChessPiece piece)
         {
             List<Move> Moves = new List<Move>();
             for(int i = 1; i <= MaxSteps; i++)
@@ -36,9 +40,9 @@ namespace Chess.MonoGame
                 {
                     break;
                 }
-                Moves.Add(new Move()); //TODO
+                Moves.Add(new MovementMove(board, piece, Row, Column));
             }
-            return Moves;
+            return Moves.AsReadOnly();
         }
     }
 }
