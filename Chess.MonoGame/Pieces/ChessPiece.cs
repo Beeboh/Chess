@@ -15,45 +15,29 @@ namespace Chess.MonoGame.Pieces
     {
         public ChessPiece(Alliance alliance, Texture2D texture, IEnumerable<IPieceBehaviour> pieceBehaviours)
         {
-            StartingRow = 0;
-            StartingColumn = 0;
-            Row = StartingRow;
-            Column = StartingColumn;
+            Row = 0;
+            Column = 0;
             Alliance = alliance;
             Texture = texture;
             PieceBehaviours = pieceBehaviours;
-            HasMoved = false;
         }
         public ChessPiece(Alliance alliance, Texture2D texture, IEnumerable<IPieceBehaviour> pieceBehaviours, int row, int column)
         {
-            StartingRow = row;
-            StartingColumn = column;
-            Row = StartingRow;
-            Column = StartingColumn;
+            Row = row;
+            Column = column;
             Alliance = alliance;
             Texture = texture;
             PieceBehaviours = pieceBehaviours;
-            HasMoved = false;
         }
 
 
         public int Column { get; private set; }
         public int Row { get; private set; }
-        public bool HasMoved { get; private set; }
-        private int StartingColumn { get; set; }
-        private int StartingRow { get; set; }
 
         public void SetPosition(int row, int column)
         {
             Row = row;
             Column = column;
-            HasMoved = true;
-        }
-        public void Initiate()
-        {
-            HasMoved = false;
-            StartingRow = Row;
-            StartingColumn = Column;
         }
 
         public Alliance Alliance { get; }

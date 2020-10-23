@@ -48,19 +48,4 @@ namespace Chess.MonoGame.Board
         public override int TileWidth => 100;
         public override int TileHeight => 100;
     }
-    //public class CustomBoard : ChessBoard
-    //{
-    //    public CustomBoard(int width, int height, int tilewidth, int tileheight)
-    //    {
-    //        Width = width;
-    //        Height = height;
-    //        TileWidth = tilewidth;
-    //        TileHeight = tileheight;
-    //    }
-
-    //    public override int Width { get; }
-    //    public override int Height { get; }
-    //    public override int TileWidth { get; }
-    //    public override int TileHeight { get; }
-    //}
 }

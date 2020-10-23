@@ -1,4 +1,5 @@
 ﻿using Chess.MonoGame.Board;
+using Chess.MonoGame.Factories;
 using Chess.MonoGame.Pieces;
 using Microsoft.Xna.Framework;
 using System;
@@ -7,18 +8,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Chess.MonoGame.Factories
+namespace Chess.MonoGame.Builders
 {
-    public abstract class ChessBoardFactory
+    public class StandardBoardBuilder : ChessBoardBuilder
     {
-        public abstract ChessBoard GetBoard(Point origin);
-    }
-    public class StandardBoardFactory : ChessBoardFactory
-    {
-        public StandardBoardFactory(BoardTexturePack boardTextures, PieceTexturePack pieceTextures)
+        public StandardBoardBuilder(BoardTexturePack boardTextures, PieceTexturePack pieceTextures)
         {
             BoardTextures = boardTextures;
-            PieceTextures = pieceTextures;
+            PieceTextures = PieceTextures;
             PawnFactory = new PawnFactory();
             KnightFactory = new KnightFactory();
             BishopFactory = new BishopFactory();
@@ -34,11 +31,8 @@ namespace Chess.MonoGame.Factories
         private ChessPieceFactory RookFactory { get; }
         private ChessPieceFactory QueenFactory { get; }
         private ChessPieceFactory KingFactory { get; }
-
-        public override ChessBoard GetBoard(Point origin)
+        public override void AddPieces()
         {
-
-            //Create pieces
             ChessPiece aPawn_white = PawnFactory.GetPiece(Alliance.White, PieceTextures.WhitePawn);
             ChessPiece bPawn_white = PawnFactory.GetPiece(Alliance.White, PieceTextures.WhitePawn);
             ChessPiece cPawn_white = PawnFactory.GetPiece(Alliance.White, PieceTextures.WhitePawn);
@@ -72,26 +66,6 @@ namespace Chess.MonoGame.Factories
             ChessPiece hRook_black = RookFactory.GetPiece(Alliance.Black, PieceTextures.BlackRook);
             ChessPiece queen_black = QueenFactory.GetPiece(Alliance.Black, PieceTextures.BlackQueen);
             ChessPiece king_black = KingFactory.GetPiece(Alliance.Black, PieceTextures.BlackKing);
-
-            //Create Tiles
-            List<Tile> tiles = new List<Tile>();
-            for (int i = 0; i < 8; i++)
-            {
-                for (int j = 0; j < 8; j++)
-                {
-                    if ((i + j) % 2 == 0)
-                    {
-                        tiles.Add(new Tile(i, j, TileColor.LightSquare, BoardTextures.LightSquare));
-                    }
-                    else
-                    {
-                        tiles.Add(new Tile(i, j, TileColor.DarkSquare, BoardTextures.DarkSquare));
-                    }
-                }
-            }
-
-            //Create the board and add the pieces
-            ChessBoard Board = new StandardBoard(origin, tiles);
 
             Board[0, 0].AttachPiece(aRook_black);
             Board[0, 1].AttachPiece(bKnight_black);
@@ -128,8 +102,27 @@ namespace Chess.MonoGame.Factories
             Board[7, 5].AttachPiece(fBishop_white);
             Board[7, 6].AttachPiece(gKnight_white);
             Board[7, 7].AttachPiece(hRook_white);
+        }
 
-            return Board;
+        public override void CreateEmptyBoard(Point origin)
+        {
+            List<Tile> tiles = new List<Tile>();
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    if ((i + j) % 2 == 0)
+                    {
+                        tiles.Add(new Tile(i, j, TileColor.LightSquare, BoardTextures.LightSquare));
+                    }
+                    else
+                    {
+                        tiles.Add(new Tile(i, j, TileColor.DarkSquare, BoardTextures.DarkSquare));
+                    }
+                }
+            }
+
+            Board = new StandardBoard(origin, tiles);
         }
     }
 }

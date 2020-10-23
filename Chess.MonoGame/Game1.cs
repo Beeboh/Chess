@@ -20,10 +20,10 @@ namespace Chess.MonoGame
         SpriteBatch spriteBatch;
         PieceTexturePack PieceTextures;
         BoardTexturePack BoardTextures;
-        ChessBoard Board;
+        ChessMatch Match;
 
         MouseState PreviousMouseState;
-        ChessPiece SelectedPiece;
+
         
 
 
@@ -47,26 +47,14 @@ namespace Chess.MonoGame
         {
             base.Initialize();
             ChessBoardFactory StandardBoardFactory = new StandardBoardFactory(BoardTextures, PieceTextures);
-            Board = StandardBoardFactory.GetBoard(Point.Zero);
+            ChessBoard Board = StandardBoardFactory.GetBoard(Point.Zero);
+            Player WhitePlayer = new Player("Player1", Alliance.White);
+            Player BlackPlayer = new Player("Player2", Alliance.Black);
+            Match = new ChessMatch(Board, WhitePlayer, BlackPlayer);
+            Match.Start(); //delete
             PreviousMouseState = Mouse.GetState();
             //debug. remember to (maybe) change the row/column of movementmove to private//
-            //foreach(Tile tile in Board.Tiles)
-            //{
-            //    if (!tile.IsVacant)
-            //    {
-            //        System.Diagnostics.Debug.WriteLine("{0} ({1},{2}):", tile.Piece.GetType(), tile.Piece.Row,tile.Piece.Column);
-            //        ReadOnlyCollection<Move> Moves = tile.Piece.GetCandidateMoves(Board);
-            //        foreach(Move move in Moves)
-            //        {
-            //            if (move is MovementMove)
-            //            {
-            //                MovementMove movement = move as MovementMove;
-            //                System.Diagnostics.Debug.WriteLine("({0},{1})", movement.NewRow, movement.NewColumn);
-            //            }
-                        
-            //        }
-            //    }
-            //}
+
         }
 
         /// <summary>
@@ -116,41 +104,58 @@ namespace Chess.MonoGame
         protected override void Update(GameTime gameTime)
         {
             MouseState mouseState = Mouse.GetState();
-            if (mouseState.LeftButton == ButtonState.Pressed && PreviousMouseState.LeftButton == ButtonState.Released)
+            bool UserClicked = mouseState.LeftButton == ButtonState.Pressed && PreviousMouseState.LeftButton == ButtonState.Released;
+            if (Match.Started)
             {
-                Point MousePosition = new Point(mouseState.X, mouseState.Y);
-                Point MousePositionOnBoard = MousePosition - Board.Origin;
-                int SelectedColumn = MousePositionOnBoard.X / Board.TileWidth;
-                int SelectedRow = MousePositionOnBoard.Y / Board.TileHeight;
-                if (Board.ValidTile(SelectedRow, SelectedColumn))
+                //Match.UpdateClock(gameTime.ElapsedGameTime);
+                if (UserClicked)
                 {
-                    Tile SelectedTile = Board[SelectedRow, SelectedColumn];
-
-                    if (SelectedPiece == null)
-                    {
-                        if (!SelectedTile.IsVacant)
-                        {
-                            SelectedPiece = SelectedTile.Piece;
-                            ReadOnlyCollection<Move> Moves = SelectedPiece.GetCandidateMoves(Board);
-                            foreach (Move move in Moves)
-                            {
-                                System.Diagnostics.Debug.WriteLine("({0},{1})", move.TargetRow, move.TargetColumn);
-                            }
-                            System.Diagnostics.Debug.WriteLine("");
-                        }
-                    }
-                    else
-                    {
-                        ReadOnlyCollection<Move> CandidateMoves = SelectedPiece.GetCandidateMoves(Board);
-                        Move SelectedMove = CandidateMoves.Where(m => m.Piece == SelectedPiece && m.TargetRow == SelectedRow && m.TargetColumn == SelectedColumn).FirstOrDefault();
-                        if (SelectedMove != null)
-                        {
-                            SelectedMove.Execute();
-                        }
-                        SelectedPiece = null;
-                    }
+                    Point MousePosition = new Point(mouseState.X, mouseState.Y);
+                    Match.MouseClick(MousePosition);
                 }
             }
+            else
+            {
+                //idk yet
+            }
+
+
+
+            //if (mouseState.LeftButton == ButtonState.Pressed && PreviousMouseState.LeftButton == ButtonState.Released)
+            //{
+            //    Point MousePosition = new Point(mouseState.X, mouseState.Y);
+            //    Point MousePositionOnBoard = MousePosition - Board.Origin;
+            //    int SelectedColumn = MousePositionOnBoard.X / Board.TileWidth;
+            //    int SelectedRow = MousePositionOnBoard.Y / Board.TileHeight;
+            //    if (Board.ValidTile(SelectedRow, SelectedColumn))
+            //    {
+            //        Tile SelectedTile = Board[SelectedRow, SelectedColumn];
+
+            //        if (SelectedPiece == null)
+            //        {
+            //            if (!SelectedTile.IsVacant)
+            //            {
+            //                SelectedPiece = SelectedTile.Piece;
+            //                ReadOnlyCollection<Move> Moves = SelectedPiece.GetCandidateMoves(Board);
+            //                foreach (Move move in Moves)
+            //                {
+            //                    System.Diagnostics.Debug.WriteLine("({0},{1})", move.TargetRow, move.TargetColumn);
+            //                }
+            //                System.Diagnostics.Debug.WriteLine("");
+            //            }
+            //        }
+            //        else
+            //        {
+            //            ReadOnlyCollection<Move> CandidateMoves = SelectedPiece.GetCandidateMoves(Board);
+            //            Move SelectedMove = CandidateMoves.Where(m => m.Piece == SelectedPiece && m.TargetRow == SelectedRow && m.TargetColumn == SelectedColumn).FirstOrDefault();
+            //            if (SelectedMove != null)
+            //            {
+            //                SelectedMove.Execute();
+            //            }
+            //            SelectedPiece = null;
+            //        }
+            //    }
+            //}
             PreviousMouseState = mouseState;
             base.Update(gameTime);
         }
@@ -161,11 +166,27 @@ namespace Chess.MonoGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+            ChessBoard Board = Match.GetBoard();
+
             spriteBatch.Begin();
             foreach (Tile tile in Board.Tiles)
             {
                 Rectangle tileposition = new Rectangle(Board.Origin.X + tile.Column * Board.TileWidth, Board.Origin.Y + tile.Row * Board.TileHeight, Board.TileWidth, Board.TileHeight);
-                spriteBatch.Draw(tile.Texture, tileposition, Color.White);
+                if (Match.CurrentTurn.CurrentPartialTurn.SelectedPiece != null)
+                {
+                    if (tile.Row == Match.CurrentTurn.CurrentPartialTurn.SelectedPiece.Row && tile.Column == Match.CurrentTurn.CurrentPartialTurn.SelectedPiece.Column)
+                    {
+                        spriteBatch.Draw(tile.Texture, tileposition, Color.LightBlue);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(tile.Texture, tileposition, Color.White);
+                    }
+                }
+                else
+                {
+                    spriteBatch.Draw(tile.Texture, tileposition, Color.White);
+                }
                 if (!tile.IsVacant)
                 {
                     spriteBatch.Draw(tile.Piece.Texture, tileposition, Color.White);

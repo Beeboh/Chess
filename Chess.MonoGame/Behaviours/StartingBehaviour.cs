@@ -26,11 +26,12 @@ namespace Chess.MonoGame.Behaviours
 
         public ReadOnlyCollection<Move> GetCandidateMoves(ChessBoard board, ChessPiece piece)
         {
-            List<Move> CandidateMoves = new List<Move>();
-            if (!piece.HasMoved)
-            {
-                CandidateMoves.Add(new )
-            }
+            throw new NotImplementedException();
+            //List<Move> CandidateMoves = new List<Move>();
+            //if (!piece.HasMoved)
+            //{
+            //    CandidateMoves.Add(new )
+            //}
         }
     }
 }
