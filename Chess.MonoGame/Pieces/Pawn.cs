@@ -10,15 +10,20 @@ namespace Chess.MonoGame.Pieces
 {
     public class Pawn : ChessPiece, IEnPassantable
     {
-        public Pawn(Alliance alliance, Texture2D texture, IEnumerable<IPieceBehaviour> pieceBehaviours) : base(alliance, texture, pieceBehaviours)
+        public Pawn(Alliance alliance, Texture2D texture, IEnumerable<IPieceBehaviour> pieceBehaviours, bool currentlyenpassantable) : base(alliance, texture, pieceBehaviours)
         {
-            CurrentlyEnPassantable = false;
+            CurrentlyEnPassantable = currentlyenpassantable;
         }
-        public Pawn(Alliance alliance, Texture2D texture, IEnumerable<IPieceBehaviour> pieceBehaviours, int x, int y) : base(alliance, texture, pieceBehaviours, x, y)
+        public Pawn(Alliance alliance, Texture2D texture, IEnumerable<IPieceBehaviour> pieceBehaviours, int row, int column, bool currentlyenpassantable) : base(alliance, texture, pieceBehaviours, row, column)
         {
-            CurrentlyEnPassantable = false;
+            CurrentlyEnPassantable = currentlyenpassantable;
         }
 
         public bool CurrentlyEnPassantable { get; set; }
+
+        public override ChessPiece GetCopy()
+        {
+            return new Pawn(Alliance, Texture, PieceBehaviours, Row, Column, CurrentlyEnPassantable);
+        }
     }
 }

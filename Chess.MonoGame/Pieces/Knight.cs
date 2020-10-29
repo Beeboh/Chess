@@ -14,9 +14,14 @@ namespace Chess.MonoGame.Pieces
         {
 
         }
-        public Knight(Alliance alliance, Texture2D texture, IEnumerable<IPieceBehaviour> pieceBehaviours, int x, int y) : base(alliance, texture, pieceBehaviours, x, y)
+        public Knight(Alliance alliance, Texture2D texture, IEnumerable<IPieceBehaviour> pieceBehaviours, int row, int column) : base(alliance, texture, pieceBehaviours, row, column)
         {
 
+        }
+
+        public override ChessPiece GetCopy()
+        {
+            return new Knight(Alliance, Texture, PieceBehaviours, Row, Column);
         }
     }
 }

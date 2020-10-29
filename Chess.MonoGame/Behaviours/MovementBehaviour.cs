@@ -40,7 +40,7 @@ namespace Chess.MonoGame.Behaviours
                 {
                     break;
                 }
-                Moves.Add(new MovementMove(board, piece, Row, Column));
+                Moves.Add(new MovementMove(board[piece.Row,piece.Column], Tile));
             }
             return Moves.AsReadOnly();
         }

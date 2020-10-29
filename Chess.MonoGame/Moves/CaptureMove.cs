@@ -10,17 +10,11 @@ namespace Chess.MonoGame.Moves
 {
     public class CaptureMove : Move
     {
-        public CaptureMove(ChessBoard board, ChessPiece piece, int targetrow, int targetcolumn) : base(piece, targetrow, targetcolumn)
+        public CaptureMove(Tile selectedTile, Tile targetTile) : base(selectedTile.Piece, selectedTile, targetTile)
         {
-            Board = board;
-            CapturedPiece = Board[TargetRow, TargetColumn].Piece;
-            OldRow = Piece.Row;
-            OldColumn = Piece.Column;
+            CapturedPiece = targetTile.Piece;
         }
-        private ChessBoard Board { get; }
-        private ChessPiece CapturedPiece { get; }
-        private int OldRow { get; }
-        private int OldColumn { get; }
+        public ChessPiece CapturedPiece { get; }
         
         private bool executed { get; set; }
 
@@ -28,8 +22,8 @@ namespace Chess.MonoGame.Moves
         {
             if (!executed)
             {
-                Board[OldRow, OldColumn].DetachPiece();
-                Board[TargetRow, TargetColumn].AttachPiece(Piece);
+                SelectedTile.DetachPiece();
+                TargetTile.AttachPiece(Piece);
                 executed = true;
             }
         }
@@ -38,8 +32,8 @@ namespace Chess.MonoGame.Moves
         {
             if (executed)
             {
-                Board[TargetRow, TargetColumn].AttachPiece(CapturedPiece);
-                Board[OldRow, OldColumn].AttachPiece(Piece);
+                TargetTile.AttachPiece(CapturedPiece);
+                SelectedTile.AttachPiece(Piece);
                 executed = false;
             }
         }

@@ -30,9 +30,11 @@ namespace Chess.MonoGame.Pieces
             PieceBehaviours = pieceBehaviours;
         }
 
-
-        public int Column { get; private set; }
         public int Row { get; private set; }
+        public int Column { get; private set; }
+        public Alliance Alliance { get; }
+        public Texture2D Texture { get; }
+        protected IEnumerable<IPieceBehaviour> PieceBehaviours { get; }
 
         public void SetPosition(int row, int column)
         {
@@ -40,13 +42,6 @@ namespace Chess.MonoGame.Pieces
             Column = column;
         }
 
-        public Alliance Alliance { get; }
-        public Texture2D Texture { get; }
-
-        private IEnumerable<IPieceBehaviour> PieceBehaviours { get; }
-
-
-        //Maybe move to a different class, only downside is making PieceBehaviours public
         public ReadOnlyCollection<Move> GetCandidateMoves(ChessBoard board)
         {
             List<Move> CandidateMoves = new List<Move>();
@@ -57,5 +52,6 @@ namespace Chess.MonoGame.Pieces
             }
             return CandidateMoves.AsReadOnly();
         }
+        public abstract ChessPiece GetCopy();
     }
 }

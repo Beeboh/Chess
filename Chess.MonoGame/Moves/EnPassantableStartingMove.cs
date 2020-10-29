@@ -11,23 +11,17 @@ namespace Chess.MonoGame.Moves
 {
     public class EnPassantableStartingMove : StartingMove
     {
-        public EnPassantableStartingMove(ChessBoard board, ChessPiece piece, int targetrow, int targetcolumn) : base(piece, targetrow, targetcolumn)
+        public EnPassantableStartingMove(Tile selectedTile, Tile targetTile) : base(selectedTile, targetTile)
         {
-            Board = board;
-            OldRow = Piece.Row;
-            OldColumn = Piece.Column;
             executed = false;
         }
-        private ChessBoard Board { get; }
-        private int OldRow { get; }
-        private int OldColumn { get; }
         private bool executed { get; set; }
         public override void Execute()
         {
             if (!executed)
             {
-                Board[Piece.Row, Piece.Column].DetachPiece();
-                Board[TargetRow, TargetColumn].AttachPiece(Piece);
+                SelectedTile.DetachPiece();
+                TargetTile.AttachPiece(Piece);
                 if (Piece is IEnPassantable)
                 {
                     IEnPassantable enPassantablePiece = Piece as IEnPassantable;
@@ -41,8 +35,8 @@ namespace Chess.MonoGame.Moves
         {
             if (executed)
             {
-                Board[TargetRow, TargetColumn].DetachPiece();
-                Board[OldRow, OldColumn].AttachPiece(Piece);
+                SelectedTile.DetachPiece();
+                TargetTile.AttachPiece(Piece);
                 if (Piece is IEnPassantable)
                 {
                     IEnPassantable enPassantablePiece = Piece as IEnPassantable;

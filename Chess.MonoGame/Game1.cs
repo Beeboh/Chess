@@ -107,12 +107,12 @@ namespace Chess.MonoGame
             bool UserClicked = mouseState.LeftButton == ButtonState.Pressed && PreviousMouseState.LeftButton == ButtonState.Released;
             if (Match.Started)
             {
-                //Match.UpdateClock(gameTime.ElapsedGameTime);
                 if (UserClicked)
                 {
                     Point MousePosition = new Point(mouseState.X, mouseState.Y);
                     Match.MouseClick(MousePosition);
                 }
+                Match.UpdateClock(gameTime.ElapsedGameTime);
             }
             else
             {
@@ -172,9 +172,9 @@ namespace Chess.MonoGame
             foreach (Tile tile in Board.Tiles)
             {
                 Rectangle tileposition = new Rectangle(Board.Origin.X + tile.Column * Board.TileWidth, Board.Origin.Y + tile.Row * Board.TileHeight, Board.TileWidth, Board.TileHeight);
-                if (Match.CurrentTurn.CurrentPartialTurn.SelectedPiece != null)
+                if (Match.PartialTurnTracker!=null && Match.PartialTurnTracker.SelectedPiece != null)
                 {
-                    if (tile.Row == Match.CurrentTurn.CurrentPartialTurn.SelectedPiece.Row && tile.Column == Match.CurrentTurn.CurrentPartialTurn.SelectedPiece.Column)
+                    if (tile.Row == Match.PartialTurnTracker.SelectedPiece.Row && tile.Column == Match.PartialTurnTracker.SelectedPiece.Column)
                     {
                         spriteBatch.Draw(tile.Texture, tileposition, Color.LightBlue);
                     }

@@ -46,7 +46,9 @@
     <Compile Include="Builders\ChessBoardBuilder.cs" />
     <Compile Include="Builders\ChessBoardShop.cs" />
     <Compile Include="Builders\StandardBoardBuilder.cs" />
+    <Compile Include="ChessClock.cs" />
     <Compile Include="ChessMatch.cs" />
+    <Compile Include="ClockManager.cs" />
     <Compile Include="Moves\CaptureMove.cs" />
     <Compile Include="Factories\BishopFactory.cs" />
     <Compile Include="Factories\KingFactory.cs" />
@@ -58,6 +60,7 @@
     <Compile Include="Moves\EnPassantableStartingMove.cs" />
     <Compile Include="Moves\MovementMove.cs" />
     <Compile Include="PartialTurn.cs" />
+    <Compile Include="PartialTurnTracker.cs" />
     <Compile Include="Pieces\Bishop.cs" />
     <Compile Include="BoardTexturePack.cs" />
     <Compile Include="Board\ChessBoard.cs" />
@@ -82,6 +85,7 @@
     <Compile Include="Behaviours\StartingBehaviour.cs" />
     <Compile Include="Moves\StartingMove.cs" />
     <Compile Include="Turn.cs" />
+    <Compile Include="TurnManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

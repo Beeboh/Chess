@@ -14,9 +14,14 @@ namespace Chess.MonoGame.Pieces
         {
 
         }
-        public Rook(Alliance alliance, Texture2D texture, IEnumerable<IPieceBehaviour> pieceBehaviours, int x, int y) : base(alliance, texture, pieceBehaviours, x, y)
+        public Rook(Alliance alliance, Texture2D texture, IEnumerable<IPieceBehaviour> pieceBehaviours, int row, int column) : base(alliance, texture, pieceBehaviours, row, column)
         {
+            
+        }
 
+        public override ChessPiece GetCopy()
+        {
+            return new Rook(Alliance, Texture, PieceBehaviours, Row, Column);
         }
     }
 }

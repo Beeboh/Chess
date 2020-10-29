@@ -43,7 +43,7 @@ namespace Chess.MonoGame.Behaviours
                 {
                     if (tile.Piece.Alliance != PieceAlliance)
                     {
-                        CandidateMoves.Add(new CaptureMove(board, piece, Row, Column));
+                        CandidateMoves.Add(new CaptureMove(board[piece.Row, piece.Column], tile));
                     }
                     break;
                 }

@@ -18,16 +18,17 @@ namespace Chess.MonoGame
             Board = board;
             WhitePlayer = whiteplayer;
             BlackPlayer = blackplayer;
-            Turns = new List<Turn>();
-
+            ClockManager = new ClockManager(CreateClocks(new TimeSpan(0,5,0)), new TimeSpan(0,0,5));
+            TurnManager = new TurnManager(whiteplayer, blackplayer, ClockManager, board);
             Started = false;
             Ended = false;
         }
+        private ClockManager ClockManager { get; }
         private ChessBoard Board { get; }
         private Player WhitePlayer { get; }
         private Player BlackPlayer { get; }
-        public Turn CurrentTurn { get; private set; }
-        private List<Turn> Turns { get; }
+        public PartialTurnTracker PartialTurnTracker { get; private set; }
+        public TurnManager TurnManager { get; }
 
         public bool Started { get; private set; }
         public bool Ended { get; private set; }
@@ -41,67 +42,34 @@ namespace Chess.MonoGame
             if (Board.ValidTile(SelectedRow, SelectedColumn))
             {
                 Tile SelectedTile = Board[SelectedRow, SelectedColumn];
-                if (CurrentTurn.CurrentPartialTurn.SelectedPiece == null)
+                PartialTurnTracker.SelectTile(SelectedTile);
+                if(PartialTurnTracker.PartialTurn != null)
                 {
-                    if (!SelectedTile.IsVacant)
-                    {
-                        if (SelectedTile.Piece.Alliance == CurrentTurn.CurrentPartialTurn.Player.Alliance)
-                        {
-                            CurrentTurn.CurrentPartialTurn.SetSelectedPiece(SelectedTile.Piece);
-                        }
-                    }
-                }
-                else
-                {
-                    if (!SelectedTile.IsVacant && SelectedTile.Piece.Alliance == CurrentTurn.CurrentPartialTurn.Player.Alliance)
-                    {
-                        CurrentTurn.CurrentPartialTurn.SetSelectedPiece(SelectedTile.Piece);
-                    }
-                    else
-                    {
-                        ReadOnlyCollection<Move> CandidateMoves = CurrentTurn.CurrentPartialTurn.SelectedPiece.GetCandidateMoves(Board);
-                        Move SelectedMove = CandidateMoves.Where(m => m.Piece == CurrentTurn.CurrentPartialTurn.SelectedPiece && m.TargetRow == SelectedRow && m.TargetColumn == SelectedColumn).FirstOrDefault();
-                        if (SelectedMove != null)
-                        {
-                            SelectedMove.Execute();
-                            if (CurrentTurn.CurrentPartialTurn == CurrentTurn.WhiteTurn)
-                            {
-                                CurrentTurn.SwitchPartialTurn();
-                            }
-                            else if (CurrentTurn.CurrentPartialTurn == CurrentTurn.BlackTurn)
-                            {
-                                NewTurn();
-                            }
-                        }
-                        else
-                        {
-                            CurrentTurn.CurrentPartialTurn.DeselectPiece();
-                        }
-                    }
-                    
+                    PartialTurnTracker = TurnManager.AddPartialTurn(PartialTurnTracker.PartialTurn);
                 }
             }
         }
         public void UpdateClock(TimeSpan delta)
         {
-            throw new NotImplementedException();
+            ClockManager.SubTractTime(delta);
+            ChessClock clock = ClockManager.GetCurrentClock();
+            System.Diagnostics.Debug.WriteLine(string.Format("{0}:{1}:{2}", clock.Time.Hours, clock.Time.Minutes, clock.Time.Seconds));
         }
         public void Start()
         {
             Started = true;
-            NewTurn();
+            PartialTurnTracker = new PartialTurnTracker(WhitePlayer, ClockManager.GetCurrentClock(), Board);
         }
         public ChessBoard GetBoard()
         {
             return Board;
         }
 
-        private void NewTurn()
+        private ReadOnlyCollection<ChessClock> CreateClocks(TimeSpan startTime)
         {
-            int NewTurnNumber = Turns.Count + 1;
-            Turn NewTurn = new Turn(NewTurnNumber, WhitePlayer, BlackPlayer);
-            Turns.Add(NewTurn);
-            CurrentTurn = NewTurn;
+            ChessClock WhiteClock = new ChessClock(WhitePlayer, startTime);
+            ChessClock BlackClock = new ChessClock(BlackPlayer, startTime);
+            return new List<ChessClock>() { WhiteClock, BlackClock }.AsReadOnly();
         }
     }
 

@@ -1,4 +1,5 @@
-﻿using Chess.MonoGame.Pieces;
+﻿using Chess.MonoGame.Board;
+using Chess.MonoGame.Pieces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,16 +10,16 @@ namespace Chess.MonoGame.Moves
 {
     public abstract class Move
     {
-        public Move(ChessPiece piece, int targetrow, int targetcolumn)
+        public Move(ChessPiece piece, Tile selectedTile, Tile targetTile)
         {
             Piece = piece;
-            TargetRow = targetrow;
-            TargetColumn = targetcolumn;
+            SelectedTile = selectedTile;
+            TargetTile = targetTile;
         }
         public abstract void Execute();
         public abstract void Undo();
         public ChessPiece Piece { get; }
-        public int TargetRow { get; }
-        public int TargetColumn { get; }
+        public Tile SelectedTile { get; }
+        public Tile TargetTile { get; }
     }
 }

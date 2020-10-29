@@ -10,26 +10,20 @@ namespace Chess.MonoGame
 {
     public class Turn
     {
-        public Turn(int number, Player whiteplayer, Player blackplayer)
+        public Turn(int number, PartialTurn whiteTurn)
         {
             Number = number;
-            WhitePlayer = whiteplayer;
-            BlackPlayer = blackplayer;
-            WhiteTurn = new PartialTurn(WhitePlayer);
-            CurrentPartialTurn = WhiteTurn;
+            WhiteTurn = whiteTurn;
         }
-        private Player WhitePlayer { get; }
-        private Player BlackPlayer { get; }
+        public Turn(int number, PartialTurn whiteTurn, PartialTurn blackTurn)
+        {
+            Number = number;
+            WhiteTurn = whiteTurn;
+            BlackTurn = blackTurn;
+        }
 
         public int Number { get; }
-        public PartialTurn WhiteTurn { get; private set; }
-        public PartialTurn BlackTurn { get; private set; }
-        public PartialTurn CurrentPartialTurn { get; private set; }
-
-        public void SwitchPartialTurn()
-        {
-            BlackTurn = new PartialTurn(BlackPlayer);
-            CurrentPartialTurn = BlackTurn;
-        }
+        public PartialTurn WhiteTurn { get; }
+        public PartialTurn BlackTurn { get; set; }
     }
 }

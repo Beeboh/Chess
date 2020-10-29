@@ -37,6 +37,22 @@ namespace Chess.MonoGame.Board
             bool ValidColumn = column >= 0 && column < Width;
             return ValidRow && ValidColumn;
         }
+        protected ReadOnlyCollection<Tile> GetCopyOfTiles()
+        {
+            List<Tile> CopiedTiles = new List<Tile>();
+            foreach(Tile tile in Tiles)
+            {
+                Tile CopiedTile = new Tile(tile.Column, tile.Row, tile.Color, tile.Texture);
+                if (!tile.IsVacant)
+                {
+                    ChessPiece CopiedPiece = tile.Piece.GetCopy();
+                    CopiedTile.AttachPiece(CopiedPiece);
+                }
+                CopiedTiles.Add(CopiedTile);
+            }
+            return CopiedTiles.AsReadOnly();
+        }
+        public abstract ChessBoard GetCopy();
 
     }
     public class StandardBoard : ChessBoard
@@ -47,5 +63,11 @@ namespace Chess.MonoGame.Board
         }
         public override int TileWidth => 100;
         public override int TileHeight => 100;
+
+        public override ChessBoard GetCopy()
+        {
+            ReadOnlyCollection<Tile> CopiedTiles = GetCopyOfTiles();
+            return new StandardBoard(Origin, CopiedTiles);
+        }
     }
 }

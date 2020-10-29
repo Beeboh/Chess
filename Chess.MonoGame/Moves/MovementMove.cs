@@ -10,16 +10,10 @@ namespace Chess.MonoGame.Moves
 {
     public class MovementMove : Move
     {
-        public MovementMove(ChessBoard board, ChessPiece piece, int targetrow, int targetcolumn) : base(piece, targetrow, targetcolumn)
+        public MovementMove(Tile selectedTile, Tile targetTile) : base(selectedTile.Piece, selectedTile, targetTile)
         {
-            Board = board;
-            OldRow = Piece.Row;
-            OldColumn = Piece.Column;
             executed = false;
         }
-        private ChessBoard Board { get; }
-        private int OldRow { get; }
-        private int OldColumn { get; }
         private bool executed { get; set; }
 
 
@@ -27,8 +21,8 @@ namespace Chess.MonoGame.Moves
         {
             if (!executed)
             {
-                Board[OldRow, OldColumn].DetachPiece();
-                Board[TargetRow, TargetColumn].AttachPiece(Piece);
+                SelectedTile.DetachPiece();
+                TargetTile.AttachPiece(Piece);
                 executed = true;
             }
         }
@@ -37,8 +31,8 @@ namespace Chess.MonoGame.Moves
         {
             if (executed)
             {
-                Board[TargetRow, TargetColumn].DetachPiece();
-                Board[OldRow, OldColumn].AttachPiece(Piece);
+                TargetTile.DetachPiece();
+                SelectedTile.AttachPiece(Piece);
                 executed = false;
             }
         }

@@ -10,7 +10,7 @@ namespace Chess.MonoGame.Moves
 {
     public abstract class StartingMove : Move
     {
-        public StartingMove(ChessPiece piece, int targetrow, int targetcolumn) : base(piece, targetrow, targetcolumn)
+        public StartingMove(Tile selectedTile, Tile targetTile) : base(selectedTile.Piece, selectedTile, targetTile)
         {
 
         }

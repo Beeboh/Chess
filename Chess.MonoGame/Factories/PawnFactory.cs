@@ -26,7 +26,7 @@ namespace Chess.MonoGame.Factories
             IPieceBehaviour diagonalLeftCapture = new CaptureBehaviour(-1, Ydirection, 1, alliance);
             IPieceBehaviour diagonalRightCapture = new CaptureBehaviour(1, Ydirection, 1, alliance);
             IPieceBehaviour[] pieceBehaviours = new IPieceBehaviour[] { forwardMovement, diagonalLeftCapture, diagonalRightCapture };
-            return new Pawn(alliance, texture, pieceBehaviours);
+            return new Pawn(alliance, texture, pieceBehaviours, false);
         }
     }
 }
