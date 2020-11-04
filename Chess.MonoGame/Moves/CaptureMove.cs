@@ -8,22 +8,31 @@ using System.Threading.Tasks;
 
 namespace Chess.MonoGame.Moves
 {
-    public class CaptureMove : Move
+    public abstract class CaptureMove : Move
     {
-        public CaptureMove(Tile selectedTile, Tile targetTile) : base(selectedTile.Piece, selectedTile, targetTile)
+        public CaptureMove(Tile selectedTile, Tile targetMoveTile, Tile targetCaptureTile) : base(selectedTile.Piece, selectedTile, targetMoveTile)
         {
-            CapturedPiece = targetTile.Piece;
+            CapturedPiece = targetCaptureTile.Piece;
+            PieceHasMoved = Piece.HasMoved;
+            TargetCaptureTile = targetCaptureTile;
+            TargetMoveTile = targetMoveTile;
         }
+
         public ChessPiece CapturedPiece { get; }
-        
+        private Tile TargetMoveTile { get; }
+        private Tile TargetCaptureTile { get; }
+
         private bool executed { get; set; }
+
+        private bool PieceHasMoved { get; set; }
 
         public override void Execute()
         {
             if (!executed)
             {
                 SelectedTile.DetachPiece();
-                TargetTile.AttachPiece(Piece);
+                TargetCaptureTile.DetachPiece();
+                TargetMoveTile.AttachPiece(Piece, true);
                 executed = true;
             }
         }
@@ -32,10 +41,12 @@ namespace Chess.MonoGame.Moves
         {
             if (executed)
             {
-                TargetTile.AttachPiece(CapturedPiece);
-                SelectedTile.AttachPiece(Piece);
+                TargetMoveTile.DetachPiece();
+                TargetCaptureTile.AttachPiece(CapturedPiece);
+                SelectedTile.AttachPiece(Piece, PieceHasMoved);
                 executed = false;
             }
         }
+
     }
 }

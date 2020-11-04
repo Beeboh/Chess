@@ -18,6 +18,7 @@ namespace Chess.MonoGame
             WhitePlayer = whiteplayer;
             BlackPlayer = blackplayer;
             Board = board;
+            EnPassantManager = new EnPassantManager(board);
         }
         private List<Turn> turns;
         public ReadOnlyCollection<Turn> Turns { get; }
@@ -25,8 +26,10 @@ namespace Chess.MonoGame
         private Player WhitePlayer { get; }
         private Player BlackPlayer { get; }
         private ChessBoard Board { get; }
+        private EnPassantManager EnPassantManager { get; }
 
         public ClockManager ClockManager { get; }
+        
         public PartialTurnTracker AddPartialTurn(PartialTurn partialTurn)
         {
             Alliance alliance = partialTurn.Player.Alliance;
@@ -62,6 +65,8 @@ namespace Chess.MonoGame
             {
                 PlayerForNextPartialTurn = WhitePlayer;
             }
+
+            EnPassantManager.DisableEnPassantables(PlayerForNextPartialTurn.Alliance);
             return new PartialTurnTracker(PlayerForNextPartialTurn, ClockManager.GetCurrentClock(), Board);
 
         }

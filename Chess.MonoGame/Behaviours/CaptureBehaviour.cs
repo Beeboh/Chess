@@ -1,23 +1,22 @@
-﻿using System;
+﻿using Chess.MonoGame.Board;
+using Chess.MonoGame.Moves;
+using Chess.MonoGame.Pieces;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Chess.MonoGame.Board;
-using Chess.MonoGame.Moves;
-using Chess.MonoGame.Pieces;
 
 namespace Chess.MonoGame.Behaviours
 {
-    public class CaptureBehaviour : IPieceBehaviour
+    public abstract class CaptureBehaviour : IPieceBehaviour
     {
-        public CaptureBehaviour(int baseStepX, int baseStepY, int maxSteps, Alliance pieceAlliance)
+        public CaptureBehaviour(int baseStepX, int baseStepY, int maxSteps)
         {
             BaseStepX = baseStepX;
             BaseStepY = baseStepY;
             MaxSteps = maxSteps;
-            PieceAlliance = pieceAlliance;
         }
         public int BaseStepX { get; }
 
@@ -25,12 +24,12 @@ namespace Chess.MonoGame.Behaviours
 
         public int MaxSteps { get; }
 
-        private Alliance PieceAlliance { get; }
+        public abstract ReadOnlyCollection<Move> GetCandidateMoves(BoardState board, ChessPiece piece);
 
-        public ReadOnlyCollection<Move> GetCandidateMoves(ChessBoard board, ChessPiece piece)
+        protected ReadOnlyCollection<Tile> GetCandidateTiles(BoardState board, ChessPiece piece)
         {
-            List<Move> CandidateMoves = new List<Move>();
-            for(int i = 1; i <= MaxSteps; i++)
+            List<Tile> CandidateTiles = new List<Tile>();
+            for (int i = 1; i <= MaxSteps; i++)
             {
                 int Column = piece.Column + i * BaseStepX;
                 int Row = piece.Row + i * BaseStepY;
@@ -41,14 +40,14 @@ namespace Chess.MonoGame.Behaviours
                 Tile tile = board[Row, Column];
                 if (!tile.IsVacant)
                 {
-                    if (tile.Piece.Alliance != PieceAlliance)
+                    if (tile.Piece.Alliance != piece.Alliance)
                     {
-                        CandidateMoves.Add(new CaptureMove(board[piece.Row, piece.Column], tile));
+                        CandidateTiles.Add(tile);
                     }
                     break;
                 }
             }
-            return CandidateMoves.AsReadOnly();
+            return CandidateTiles.AsReadOnly();
         }
     }
 }

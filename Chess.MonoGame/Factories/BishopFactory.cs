@@ -13,17 +13,17 @@ namespace Chess.MonoGame.Factories
     {
         public override ChessPiece GetPiece(Alliance alliance, Texture2D texture)
         {
-            IPieceBehaviour UpLeftMovement = new MovementBehaviour(-1, -1, 1000000);
-            IPieceBehaviour UpRightMovement = new MovementBehaviour(1, -1, 1000000);
-            IPieceBehaviour DownLeftMovement = new MovementBehaviour(-1, 1, 1000000);
-            IPieceBehaviour DownRightMovement = new MovementBehaviour(1, 1, 1000000);
-            IPieceBehaviour UpLeftCapture = new CaptureBehaviour(-1, -1, 1000000, alliance);
-            IPieceBehaviour UpRightCapture = new CaptureBehaviour(1, -1, 1000000, alliance);
-            IPieceBehaviour DownLeftCapture = new CaptureBehaviour(-1, 1, 1000000, alliance);
-            IPieceBehaviour DownRightCapture = new CaptureBehaviour(1, 1, 1000000, alliance);
+            IPieceBehaviour UpLeftMovement = new BasicMovementBehaviour(-1, -1, 1000000);
+            IPieceBehaviour UpRightMovement = new BasicMovementBehaviour(1, -1, 1000000);
+            IPieceBehaviour DownLeftMovement = new BasicMovementBehaviour(-1, 1, 1000000);
+            IPieceBehaviour DownRightMovement = new BasicMovementBehaviour(1, 1, 1000000);
+            IPieceBehaviour UpLeftCapture = new BasicCaptureBehaviour(-1, -1, 1000000);
+            IPieceBehaviour UpRightCapture = new BasicCaptureBehaviour(1, -1, 1000000);
+            IPieceBehaviour DownLeftCapture = new BasicCaptureBehaviour(-1, 1, 1000000);
+            IPieceBehaviour DownRightCapture = new BasicCaptureBehaviour(1, 1, 1000000);
             IPieceBehaviour[] pieceBehaviours = new IPieceBehaviour[] { UpLeftMovement, UpRightMovement, DownLeftMovement, DownRightMovement, UpLeftCapture, UpRightCapture, DownLeftCapture, DownRightCapture };
 
-            return new Bishop(alliance, texture, pieceBehaviours);
+            return new Bishop(alliance, texture, pieceBehaviours, false);
         }
     }
 }

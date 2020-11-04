@@ -10,7 +10,7 @@ namespace Chess.MonoGame.Builders
 {
     public class ChessBoardShop
     {
-        public ChessBoard GetBoard(Point origin, ChessBoardBuilder builder)
+        public BoardState GetBoard(Point origin, ChessBoardBuilder builder)
         {
             builder.CreateEmptyBoard(origin);
             builder.AddPieces();

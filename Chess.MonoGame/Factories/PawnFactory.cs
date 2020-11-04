@@ -22,11 +22,14 @@ namespace Chess.MonoGame.Factories
             {
                 Ydirection = 1;
             }
-            IPieceBehaviour forwardMovement = new MovementBehaviour(0, Ydirection, 1);
-            IPieceBehaviour diagonalLeftCapture = new CaptureBehaviour(-1, Ydirection, 1, alliance);
-            IPieceBehaviour diagonalRightCapture = new CaptureBehaviour(1, Ydirection, 1, alliance);
-            IPieceBehaviour[] pieceBehaviours = new IPieceBehaviour[] { forwardMovement, diagonalLeftCapture, diagonalRightCapture };
-            return new Pawn(alliance, texture, pieceBehaviours, false);
+            IPieceBehaviour forwardMovement = new BasicMovementBehaviour(0, Ydirection, 1);
+            IPieceBehaviour diagonalLeftCapture = new BasicCaptureBehaviour(-1, Ydirection, 1);
+            IPieceBehaviour diagonalRightCapture = new BasicCaptureBehaviour(1, Ydirection, 1);
+            IPieceBehaviour startingDoubleMove = new StartingMovementBehaviour(0, Ydirection * 2, 1);
+            IPieceBehaviour diagonalLeftEnPassant = new EnpassantBehaviour(-1, Ydirection, -1, 0);
+            IPieceBehaviour diagonalRightEnPassant = new EnpassantBehaviour(1, Ydirection, 1, 0);
+            IPieceBehaviour[] pieceBehaviours = new IPieceBehaviour[] { forwardMovement, diagonalLeftCapture, diagonalRightCapture, startingDoubleMove, diagonalLeftEnPassant, diagonalRightEnPassant };
+            return new Pawn(alliance, texture, pieceBehaviours, false, false);
         }
     }
 }

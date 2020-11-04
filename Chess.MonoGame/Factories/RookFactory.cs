@@ -13,17 +13,17 @@ namespace Chess.MonoGame.Factories
     {
         public override ChessPiece GetPiece(Alliance alliance, Texture2D texture)
         {
-            IPieceBehaviour UpMovement = new MovementBehaviour(0, -1, 1000000);
-            IPieceBehaviour RightMovement = new MovementBehaviour(1, 0, 1000000);
-            IPieceBehaviour DownMovement = new MovementBehaviour(0, 1, 1000000);
-            IPieceBehaviour LeftMovement = new MovementBehaviour(-1, 0, 1000000);
-            IPieceBehaviour UpCapture = new CaptureBehaviour(0, -1, 1000000, alliance);
-            IPieceBehaviour RightCapture = new CaptureBehaviour(1, 0, 1000000, alliance);
-            IPieceBehaviour DownCapture = new CaptureBehaviour(0, 1, 1000000, alliance);
-            IPieceBehaviour LeftCapture = new CaptureBehaviour(-1, 0, 1000000, alliance);
+            IPieceBehaviour UpMovement = new BasicMovementBehaviour(0, -1, 1000000);
+            IPieceBehaviour RightMovement = new BasicMovementBehaviour(1, 0, 1000000);
+            IPieceBehaviour DownMovement = new BasicMovementBehaviour(0, 1, 1000000);
+            IPieceBehaviour LeftMovement = new BasicMovementBehaviour(-1, 0, 1000000);
+            IPieceBehaviour UpCapture = new BasicCaptureBehaviour(0, -1, 1000000);
+            IPieceBehaviour RightCapture = new BasicCaptureBehaviour(1, 0, 1000000);
+            IPieceBehaviour DownCapture = new BasicCaptureBehaviour(0, 1, 1000000);
+            IPieceBehaviour LeftCapture = new BasicCaptureBehaviour(-1, 0, 1000000);
 
             IPieceBehaviour[] pieceBehaviours = new IPieceBehaviour[] { UpMovement, RightMovement, DownMovement, LeftMovement, UpCapture, RightCapture, DownCapture, LeftCapture };
-            return new Rook(alliance, texture, pieceBehaviours);
+            return new Rook(alliance, texture, pieceBehaviours, false);
         }
     }
 }

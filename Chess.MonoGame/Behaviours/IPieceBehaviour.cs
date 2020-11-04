@@ -12,9 +12,6 @@ namespace Chess.MonoGame.Behaviours
 {
     public interface IPieceBehaviour
     {
-        ReadOnlyCollection<Move> GetCandidateMoves(ChessBoard board, ChessPiece piece);
-        int BaseStepX { get; }
-        int BaseStepY { get; }
-        int MaxSteps { get; }
+        ReadOnlyCollection<Move> GetCandidateMoves(BoardState board, ChessPiece piece);
     }
 }

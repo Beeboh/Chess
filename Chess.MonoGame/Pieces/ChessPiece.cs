@@ -13,21 +13,23 @@ namespace Chess.MonoGame.Pieces
 {
     public abstract class ChessPiece
     {
-        public ChessPiece(Alliance alliance, Texture2D texture, IEnumerable<IPieceBehaviour> pieceBehaviours)
+        public ChessPiece(Alliance alliance, Texture2D texture, IEnumerable<IPieceBehaviour> pieceBehaviours, bool hasmoved)
         {
             Row = 0;
             Column = 0;
             Alliance = alliance;
             Texture = texture;
             PieceBehaviours = pieceBehaviours;
+            HasMoved = hasmoved;
         }
-        public ChessPiece(Alliance alliance, Texture2D texture, IEnumerable<IPieceBehaviour> pieceBehaviours, int row, int column)
+        public ChessPiece(Alliance alliance, Texture2D texture, IEnumerable<IPieceBehaviour> pieceBehaviours, int row, int column, bool hasmoved)
         {
             Row = row;
             Column = column;
             Alliance = alliance;
             Texture = texture;
             PieceBehaviours = pieceBehaviours;
+            HasMoved = hasmoved;
         }
 
         public int Row { get; private set; }
@@ -35,14 +37,27 @@ namespace Chess.MonoGame.Pieces
         public Alliance Alliance { get; }
         public Texture2D Texture { get; }
         protected IEnumerable<IPieceBehaviour> PieceBehaviours { get; }
+        public bool HasMoved { get; private set; }
 
-        public void SetPosition(int row, int column)
+        public void InitializePosition(int row, int column)
+        {
+            Row = row;
+            Column = column;
+            HasMoved = false;
+        }
+        public void MovePosition(int row, int column)
+        {
+            Row = row;
+            Column = column;
+            HasMoved = true;
+        }
+        public void SetPoition(int row, int column)
         {
             Row = row;
             Column = column;
         }
 
-        public ReadOnlyCollection<Move> GetCandidateMoves(ChessBoard board)
+        public ReadOnlyCollection<Move> GetCandidateMoves(BoardState board)
         {
             List<Move> CandidateMoves = new List<Move>();
             foreach(IPieceBehaviour pieceBehaviour in PieceBehaviours)

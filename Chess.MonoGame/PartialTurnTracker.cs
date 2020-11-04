@@ -1,6 +1,7 @@
 ﻿using Chess.MonoGame.Board;
 using Chess.MonoGame.Moves;
 using Chess.MonoGame.Pieces;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -31,13 +32,18 @@ namespace Chess.MonoGame
             {
                 if (!selectedtile.IsVacant && selectedtile.Piece.Alliance == Player.Alliance)
                 {
+                    if (SelectedPiece != null)
+                    {
+                        Board.CurrentState[SelectedPiece.Row, SelectedPiece.Column].SetTint(Color.White);
+                    }
                     SelectedPiece = selectedtile.Piece;
+                    selectedtile.SetTint(Color.LightBlue);
                 }
                 else if (SelectedPiece != null)
                 {
-                    ReadOnlyCollection<Move> CandidateMoves = SelectedPiece.GetCandidateMoves(Board);
-                    ChessBoard CopiedBoard = Board.GetCopy();
-                    ChessPiece CopiedSelectedPiece = Board[SelectedPiece.Row, SelectedPiece.Column].Piece;
+                    ReadOnlyCollection<Move> CandidateMoves = SelectedPiece.GetCandidateMoves(Board.CurrentState);
+                    BoardState CopiedBoard = Board.CurrentState.GetCopy();
+                    ChessPiece CopiedSelectedPiece = Board.CurrentState[SelectedPiece.Row, SelectedPiece.Column].Piece;
                     ReadOnlyCollection<Move> CopiedCandidateMoves = CopiedSelectedPiece.GetCandidateMoves(CopiedBoard);
 
                     List<Move> CopiedNonLegalMoves = new List<Move>();
@@ -61,9 +67,9 @@ namespace Chess.MonoGame
                             ReadOnlyCollection<Move> OpponentCandidateMoves = OpponentPiece.GetCandidateMoves(CopiedBoard);
                             foreach(Move OpponentCandidateMove in OpponentCandidateMoves)
                             {
-                                if(OpponentCandidateMove is CaptureMove)
+                                if(OpponentCandidateMove is BasicCaptureMove)
                                 {
-                                    CaptureMove captureMove = OpponentCandidateMove as CaptureMove;
+                                    BasicCaptureMove captureMove = OpponentCandidateMove as BasicCaptureMove;
                                     if (captureMove.CapturedPiece is King)
                                     {
                                         LegalMove = false;
@@ -95,11 +101,12 @@ namespace Chess.MonoGame
                     Move SelectedMove = LegalMoves.Where(m => m.Piece == SelectedPiece && m.TargetTile == selectedtile).FirstOrDefault();
                     if (SelectedMove != null)
                     {
-                        SelectedMove.Execute();
+                        Board.Move(SelectedMove);
                         PartialTurn = new PartialTurn(Player, SelectedMove, StartTime, Clock.Time);
                     }
                     else
                     {
+                        Board.CurrentState[SelectedPiece.Row, SelectedPiece.Column].SetTint(Color.White);
                         SelectedPiece = null;
                     }
                 }

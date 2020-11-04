@@ -47,7 +47,7 @@ namespace Chess.MonoGame
         {
             base.Initialize();
             ChessBoardFactory StandardBoardFactory = new StandardBoardFactory(BoardTextures, PieceTextures);
-            ChessBoard Board = StandardBoardFactory.GetBoard(Point.Zero);
+            ChessBoard Board = StandardBoardFactory.GetBoard(Point.Zero, 100, 100);
             Player WhitePlayer = new Player("Player1", Alliance.White);
             Player BlackPlayer = new Player("Player2", Alliance.Black);
             Match = new ChessMatch(Board, WhitePlayer, BlackPlayer);
@@ -118,44 +118,6 @@ namespace Chess.MonoGame
             {
                 //idk yet
             }
-
-
-
-            //if (mouseState.LeftButton == ButtonState.Pressed && PreviousMouseState.LeftButton == ButtonState.Released)
-            //{
-            //    Point MousePosition = new Point(mouseState.X, mouseState.Y);
-            //    Point MousePositionOnBoard = MousePosition - Board.Origin;
-            //    int SelectedColumn = MousePositionOnBoard.X / Board.TileWidth;
-            //    int SelectedRow = MousePositionOnBoard.Y / Board.TileHeight;
-            //    if (Board.ValidTile(SelectedRow, SelectedColumn))
-            //    {
-            //        Tile SelectedTile = Board[SelectedRow, SelectedColumn];
-
-            //        if (SelectedPiece == null)
-            //        {
-            //            if (!SelectedTile.IsVacant)
-            //            {
-            //                SelectedPiece = SelectedTile.Piece;
-            //                ReadOnlyCollection<Move> Moves = SelectedPiece.GetCandidateMoves(Board);
-            //                foreach (Move move in Moves)
-            //                {
-            //                    System.Diagnostics.Debug.WriteLine("({0},{1})", move.TargetRow, move.TargetColumn);
-            //                }
-            //                System.Diagnostics.Debug.WriteLine("");
-            //            }
-            //        }
-            //        else
-            //        {
-            //            ReadOnlyCollection<Move> CandidateMoves = SelectedPiece.GetCandidateMoves(Board);
-            //            Move SelectedMove = CandidateMoves.Where(m => m.Piece == SelectedPiece && m.TargetRow == SelectedRow && m.TargetColumn == SelectedColumn).FirstOrDefault();
-            //            if (SelectedMove != null)
-            //            {
-            //                SelectedMove.Execute();
-            //            }
-            //            SelectedPiece = null;
-            //        }
-            //    }
-            //}
             PreviousMouseState = mouseState;
             base.Update(gameTime);
         }
@@ -166,27 +128,13 @@ namespace Chess.MonoGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            ChessBoard Board = Match.GetBoard();
+            ChessBoard Board = Match.Board;
 
             spriteBatch.Begin();
-            foreach (Tile tile in Board.Tiles)
+            foreach (Tile tile in Board.CurrentState.Tiles)
             {
                 Rectangle tileposition = new Rectangle(Board.Origin.X + tile.Column * Board.TileWidth, Board.Origin.Y + tile.Row * Board.TileHeight, Board.TileWidth, Board.TileHeight);
-                if (Match.PartialTurnTracker!=null && Match.PartialTurnTracker.SelectedPiece != null)
-                {
-                    if (tile.Row == Match.PartialTurnTracker.SelectedPiece.Row && tile.Column == Match.PartialTurnTracker.SelectedPiece.Column)
-                    {
-                        spriteBatch.Draw(tile.Texture, tileposition, Color.LightBlue);
-                    }
-                    else
-                    {
-                        spriteBatch.Draw(tile.Texture, tileposition, Color.White);
-                    }
-                }
-                else
-                {
-                    spriteBatch.Draw(tile.Texture, tileposition, Color.White);
-                }
+                spriteBatch.Draw(tile.Texture, tileposition, tile.Tint);
                 if (!tile.IsVacant)
                 {
                     spriteBatch.Draw(tile.Piece.Texture, tileposition, Color.White);

@@ -11,7 +11,7 @@ namespace Chess.MonoGame.Factories
 {
     public abstract class ChessBoardFactory
     {
-        public abstract ChessBoard GetBoard(Point origin);
+        public abstract ChessBoard GetBoard(Point origin, int tilewidth, int tileheight);
     }
     public class StandardBoardFactory : ChessBoardFactory
     {
@@ -35,7 +35,7 @@ namespace Chess.MonoGame.Factories
         private ChessPieceFactory QueenFactory { get; }
         private ChessPieceFactory KingFactory { get; }
 
-        public override ChessBoard GetBoard(Point origin)
+        public override ChessBoard GetBoard(Point origin, int tileWidth, int tileHeight)
         {
 
             //Create pieces
@@ -91,45 +91,45 @@ namespace Chess.MonoGame.Factories
             }
 
             //Create the board and add the pieces
-            ChessBoard Board = new StandardBoard(origin, tiles);
+            BoardState InitialBoardState = new StandardBoardState(tiles);
 
-            Board[0, 0].AttachPiece(aRook_black);
-            Board[0, 1].AttachPiece(bKnight_black);
-            Board[0, 2].AttachPiece(cBishop_black);
-            Board[0, 3].AttachPiece(queen_black);
-            Board[0, 4].AttachPiece(king_black);
-            Board[0, 5].AttachPiece(fBishop_black);
-            Board[0, 6].AttachPiece(gKnight_black);
-            Board[0, 7].AttachPiece(hRook_black);
+            InitialBoardState[0, 0].AttachPiece(aRook_black, false);
+            InitialBoardState[0, 1].AttachPiece(bKnight_black, false);
+            InitialBoardState[0, 2].AttachPiece(cBishop_black, false);
+            InitialBoardState[0, 3].AttachPiece(queen_black, false);
+            InitialBoardState[0, 4].AttachPiece(king_black, false);
+            InitialBoardState[0, 5].AttachPiece(fBishop_black, false);
+            InitialBoardState[0, 6].AttachPiece(gKnight_black, false);
+            InitialBoardState[0, 7].AttachPiece(hRook_black, false);
 
-            Board[1, 0].AttachPiece(aPawn_black);
-            Board[1, 1].AttachPiece(bPawn_black);
-            Board[1, 2].AttachPiece(cPawn_black);
-            Board[1, 3].AttachPiece(dPawn_black);
-            Board[1, 4].AttachPiece(ePawn_black);
-            Board[1, 5].AttachPiece(fPawn_black);
-            Board[1, 6].AttachPiece(gPawn_black);
-            Board[1, 7].AttachPiece(hPawn_black);
+            InitialBoardState[1, 0].AttachPiece(aPawn_black, false);
+            InitialBoardState[1, 1].AttachPiece(bPawn_black, false);
+            InitialBoardState[1, 2].AttachPiece(cPawn_black, false);
+            InitialBoardState[1, 3].AttachPiece(dPawn_black, false);
+            InitialBoardState[1, 4].AttachPiece(ePawn_black, false);
+            InitialBoardState[1, 5].AttachPiece(fPawn_black, false);
+            InitialBoardState[1, 6].AttachPiece(gPawn_black, false);
+            InitialBoardState[1, 7].AttachPiece(hPawn_black, false);
 
-            Board[6, 0].AttachPiece(aPawn_white);
-            Board[6, 1].AttachPiece(bPawn_white);
-            Board[6, 2].AttachPiece(cPawn_white);
-            Board[6, 3].AttachPiece(dPawn_white);
-            Board[6, 4].AttachPiece(ePawn_white);
-            Board[6, 5].AttachPiece(fPawn_white);
-            Board[6, 6].AttachPiece(gPawn_white);
-            Board[6, 7].AttachPiece(hPawn_white);
+            InitialBoardState[6, 0].AttachPiece(aPawn_white, false);
+            InitialBoardState[6, 1].AttachPiece(bPawn_white, false);
+            InitialBoardState[6, 2].AttachPiece(cPawn_white, false);
+            InitialBoardState[6, 3].AttachPiece(dPawn_white, false);
+            InitialBoardState[6, 4].AttachPiece(ePawn_white, false);
+            InitialBoardState[6, 5].AttachPiece(fPawn_white, false);
+            InitialBoardState[6, 6].AttachPiece(gPawn_white, false);
+            InitialBoardState[6, 7].AttachPiece(hPawn_white, false);
 
-            Board[7, 0].AttachPiece(aRook_white);
-            Board[7, 1].AttachPiece(bKnight_white);
-            Board[7, 2].AttachPiece(cBishop_white);
-            Board[7, 3].AttachPiece(queen_white);
-            Board[7, 4].AttachPiece(king_white);
-            Board[7, 5].AttachPiece(fBishop_white);
-            Board[7, 6].AttachPiece(gKnight_white);
-            Board[7, 7].AttachPiece(hRook_white);
+            InitialBoardState[7, 0].AttachPiece(aRook_white, false);
+            InitialBoardState[7, 1].AttachPiece(bKnight_white, false);
+            InitialBoardState[7, 2].AttachPiece(cBishop_white, false);
+            InitialBoardState[7, 3].AttachPiece(queen_white, false);
+            InitialBoardState[7, 4].AttachPiece(king_white, false);
+            InitialBoardState[7, 5].AttachPiece(fBishop_white, false);
+            InitialBoardState[7, 6].AttachPiece(gKnight_white, false);
+            InitialBoardState[7, 7].AttachPiece(hRook_white, false);
 
-            return Board;
+            return new ChessBoard(origin, tileWidth, tileHeight, InitialBoardState);
         }
     }
 }

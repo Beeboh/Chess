@@ -24,7 +24,7 @@ namespace Chess.MonoGame
             Ended = false;
         }
         private ClockManager ClockManager { get; }
-        private ChessBoard Board { get; }
+        public ChessBoard Board { get; }
         private Player WhitePlayer { get; }
         private Player BlackPlayer { get; }
         public PartialTurnTracker PartialTurnTracker { get; private set; }
@@ -39,9 +39,9 @@ namespace Chess.MonoGame
             Point MousePositionOnBoard = mouseposition - Board.Origin;
             int SelectedColumn = MousePositionOnBoard.X / Board.TileWidth;
             int SelectedRow = MousePositionOnBoard.Y / Board.TileHeight;
-            if (Board.ValidTile(SelectedRow, SelectedColumn))
+            if (Board.CurrentState.ValidTile(SelectedRow, SelectedColumn))
             {
-                Tile SelectedTile = Board[SelectedRow, SelectedColumn];
+                Tile SelectedTile = Board.CurrentState[SelectedRow, SelectedColumn];
                 PartialTurnTracker.SelectTile(SelectedTile);
                 if(PartialTurnTracker.PartialTurn != null)
                 {
@@ -60,10 +60,7 @@ namespace Chess.MonoGame
             Started = true;
             PartialTurnTracker = new PartialTurnTracker(WhitePlayer, ClockManager.GetCurrentClock(), Board);
         }
-        public ChessBoard GetBoard()
-        {
-            return Board;
-        }
+
 
         private ReadOnlyCollection<ChessClock> CreateClocks(TimeSpan startTime)
         {

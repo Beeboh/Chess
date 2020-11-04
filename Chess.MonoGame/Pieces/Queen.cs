@@ -10,18 +10,18 @@ namespace Chess.MonoGame.Pieces
 {
     public class Queen : ChessPiece
     {
-        public Queen(Alliance alliance, Texture2D texture, IEnumerable<IPieceBehaviour> pieceBehaviours) : base(alliance, texture, pieceBehaviours)
+        public Queen(Alliance alliance, Texture2D texture, IEnumerable<IPieceBehaviour> pieceBehaviours, bool hasMoved) : base(alliance, texture, pieceBehaviours, hasMoved)
         {
 
         }
-        public Queen(Alliance alliance, Texture2D texture, IEnumerable<IPieceBehaviour> pieceBehaviours, int row, int column) : base(alliance, texture, pieceBehaviours, row, column)
+        public Queen(Alliance alliance, Texture2D texture, IEnumerable<IPieceBehaviour> pieceBehaviours, int row, int column, bool hasMoved) : base(alliance, texture, pieceBehaviours, row, column, hasMoved)
         {
 
         }
 
         public override ChessPiece GetCopy()
         {
-            return new Queen(Alliance, Texture, PieceBehaviours, Row, Column);
+            return new Queen(Alliance, Texture, PieceBehaviours, Row, Column, HasMoved);
         }
     }
 }

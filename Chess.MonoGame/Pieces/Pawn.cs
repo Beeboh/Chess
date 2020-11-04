@@ -10,11 +10,11 @@ namespace Chess.MonoGame.Pieces
 {
     public class Pawn : ChessPiece, IEnPassantable
     {
-        public Pawn(Alliance alliance, Texture2D texture, IEnumerable<IPieceBehaviour> pieceBehaviours, bool currentlyenpassantable) : base(alliance, texture, pieceBehaviours)
+        public Pawn(Alliance alliance, Texture2D texture, IEnumerable<IPieceBehaviour> pieceBehaviours, bool currentlyenpassantable, bool hasMoved) : base(alliance, texture, pieceBehaviours,  hasMoved)
         {
             CurrentlyEnPassantable = currentlyenpassantable;
         }
-        public Pawn(Alliance alliance, Texture2D texture, IEnumerable<IPieceBehaviour> pieceBehaviours, int row, int column, bool currentlyenpassantable) : base(alliance, texture, pieceBehaviours, row, column)
+        public Pawn(Alliance alliance, Texture2D texture, IEnumerable<IPieceBehaviour> pieceBehaviours, int row, int column, bool currentlyenpassantable, bool hasMoved) : base(alliance, texture, pieceBehaviours, row, column, hasMoved)
         {
             CurrentlyEnPassantable = currentlyenpassantable;
         }
@@ -23,7 +23,7 @@ namespace Chess.MonoGame.Pieces
 
         public override ChessPiece GetCopy()
         {
-            return new Pawn(Alliance, Texture, PieceBehaviours, Row, Column, CurrentlyEnPassantable);
+            return new Pawn(Alliance, Texture, PieceBehaviours, Row, Column, CurrentlyEnPassantable, HasMoved);
         }
     }
 }

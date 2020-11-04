@@ -10,10 +10,10 @@ namespace Chess.MonoGame.Builders
 {
     public abstract class ChessBoardBuilder
     {
-        protected ChessBoard Board { get; set; }
+        protected BoardState Board { get; set; }
         public abstract void CreateEmptyBoard(Point origin);
         public abstract void AddPieces();
-        public ChessBoard GetBoard()
+        public BoardState GetBoard()
         {
             return Board;
         }

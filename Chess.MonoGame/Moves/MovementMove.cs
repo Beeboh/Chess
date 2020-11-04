@@ -13,16 +13,17 @@ namespace Chess.MonoGame.Moves
         public MovementMove(Tile selectedTile, Tile targetTile) : base(selectedTile.Piece, selectedTile, targetTile)
         {
             executed = false;
+            PieceHasMoved = Piece.HasMoved;
         }
         private bool executed { get; set; }
-
+        private bool PieceHasMoved { get; set; }
 
         public override void Execute()
         {
             if (!executed)
             {
                 SelectedTile.DetachPiece();
-                TargetTile.AttachPiece(Piece);
+                TargetTile.AttachPiece(Piece, true);
                 executed = true;
             }
         }
@@ -32,7 +33,7 @@ namespace Chess.MonoGame.Moves
             if (executed)
             {
                 TargetTile.DetachPiece();
-                SelectedTile.AttachPiece(Piece);
+                SelectedTile.AttachPiece(Piece, PieceHasMoved);
                 executed = false;
             }
         }

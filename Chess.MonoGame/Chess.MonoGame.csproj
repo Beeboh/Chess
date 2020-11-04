@@ -42,14 +42,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Alliance.cs" />
+    <Compile Include="Behaviours\BasicCaptureBehaviour.cs" />
     <Compile Include="Behaviours\CaptureBehaviour.cs" />
+    <Compile Include="Behaviours\EnpassantBehaviour.cs" />
+    <Compile Include="Behaviours\MovementBehaviour.cs" />
+    <Compile Include="Board\ChessBoard.cs" />
     <Compile Include="Builders\ChessBoardBuilder.cs" />
     <Compile Include="Builders\ChessBoardShop.cs" />
     <Compile Include="Builders\StandardBoardBuilder.cs" />
     <Compile Include="ChessClock.cs" />
     <Compile Include="ChessMatch.cs" />
     <Compile Include="ClockManager.cs" />
-    <Compile Include="Moves\CaptureMove.cs" />
+    <Compile Include="EnPassantManager.cs" />
+    <Compile Include="Moves\BasicCaptureMove.cs" />
     <Compile Include="Factories\BishopFactory.cs" />
     <Compile Include="Factories\KingFactory.cs" />
     <Compile Include="Factories\KnightFactory.cs" />
@@ -57,13 +62,15 @@
     <Compile Include="Factories\QueenFactory.cs" />
     <Compile Include="Factories\RookFactory.cs" />
     <Compile Include="Behaviours\IEnPassantable.cs" />
+    <Compile Include="Moves\CaptureMove.cs" />
     <Compile Include="Moves\EnPassantableStartingMove.cs" />
+    <Compile Include="Moves\EnPassantMove.cs" />
     <Compile Include="Moves\MovementMove.cs" />
     <Compile Include="PartialTurn.cs" />
     <Compile Include="PartialTurnTracker.cs" />
     <Compile Include="Pieces\Bishop.cs" />
     <Compile Include="BoardTexturePack.cs" />
-    <Compile Include="Board\ChessBoard.cs" />
+    <Compile Include="Board\BoardState.cs" />
     <Compile Include="Factories\ChessBoardFactory.cs" />
     <Compile Include="Pieces\ChessPiece.cs" />
     <Compile Include="Factories\ChessPieceFactory.cs" />
@@ -71,7 +78,7 @@
     <Compile Include="Pieces\King.cs" />
     <Compile Include="Pieces\Knight.cs" />
     <Compile Include="Moves\Move.cs" />
-    <Compile Include="Behaviours\MovementBehaviour.cs" />
+    <Compile Include="Behaviours\BasicMovementBehaviour.cs" />
     <Compile Include="Pieces\Pawn.cs" />
     <Compile Include="Behaviours\IPieceBehaviour.cs" />
     <Compile Include="PieceTexturePack.cs" />
@@ -82,10 +89,12 @@
     <Compile Include="Pieces\Rook.cs" />
     <Compile Include="Board\Tile.cs" />
     <Compile Include="Board\TileColor.cs" />
-    <Compile Include="Behaviours\StartingBehaviour.cs" />
+    <Compile Include="Behaviours\StartingMovementBehaviour.cs" />
     <Compile Include="Moves\StartingMove.cs" />
     <Compile Include="Turn.cs" />
     <Compile Include="TurnManager.cs" />
+    <Compile Include="Utils\RatioReducer.cs" />
+    <Compile Include="Utils\XYCouple.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
