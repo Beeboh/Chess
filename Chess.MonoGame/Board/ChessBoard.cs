@@ -11,7 +11,7 @@ namespace Chess.MonoGame.Board
 {
     public class ChessBoard
     {
-        public ChessBoard(Point origin, int tileHeight, int tileWidth, BoardState initialState)
+        public ChessBoard(Point origin, int tileWidth, int tileHeight, BoardState initialState)
         {
             Origin = origin;
             TileHeight = tileHeight;
