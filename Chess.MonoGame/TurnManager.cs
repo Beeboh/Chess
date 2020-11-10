@@ -55,7 +55,8 @@ namespace Chess.MonoGame
                     turns.Add(new Turn(turns.Count + 1, FirstWhiteTurn, partialTurn));
                 }
             }
-            OnPartialTurnAdded();
+            OnPartialTurnAdded(partialTurn);
+
             Player PlayerForNextPartialTurn = null;
             if (partialTurn.Player == WhitePlayer)
             {
@@ -66,14 +67,25 @@ namespace Chess.MonoGame
                 PlayerForNextPartialTurn = WhitePlayer;
             }
 
-            EnPassantManager.DisableEnPassantables(PlayerForNextPartialTurn.Alliance);
-            return new PartialTurnTracker(PlayerForNextPartialTurn, ClockManager.GetCurrentClock(), Board);
+            return new PartialTurnTracker(PlayerForNextPartialTurn, ClockManager.GetCurrentClock(), Board.CurrentState);
 
         }
-        private void OnPartialTurnAdded()
+        private void OnPartialTurnAdded(PartialTurn partialTurn)
         {
             ClockManager.IncrementTime();
             ClockManager.NextClock();
+
+            Player PlayerForNextPartialTurn = null;
+            if (partialTurn.Player == WhitePlayer)
+            {
+                PlayerForNextPartialTurn = BlackPlayer;
+            }
+            else if (partialTurn.Player == BlackPlayer)
+            {
+                PlayerForNextPartialTurn = WhitePlayer;
+            }
+            EnPassantManager.DisableEnPassantables(PlayerForNextPartialTurn.Alliance);
+            Board.SaveBoardState();
         }
     }
 }

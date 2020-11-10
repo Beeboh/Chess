@@ -16,8 +16,8 @@ namespace Chess.MonoGame.Board
             Origin = origin;
             TileHeight = tileHeight;
             TileWidth = tileWidth;
+            CurrentState = initialState;
             boardStates = new List<BoardState>();
-            boardStates.Add(initialState);
             BoardStates = boardStates.AsReadOnly();
         }
 
@@ -28,12 +28,11 @@ namespace Chess.MonoGame.Board
         public int TileWidth { get; }
 
         public ReadOnlyCollection<BoardState> BoardStates { get; }
-        public BoardState CurrentState => BoardStates[BoardStates.Count - 1];
-        public void Move(Move move)
+        public BoardState CurrentState { get; }
+        public void SaveBoardState()
         {
-            move.Execute();
-            BoardState NewState = CurrentState.GetCopy();
-            boardStates.Add(NewState);
+            BoardState CopyOfCurrentState = CurrentState.GetCopy();
+            boardStates.Add(CopyOfCurrentState);
         }
     }
 }

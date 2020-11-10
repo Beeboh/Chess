@@ -58,7 +58,7 @@ namespace Chess.MonoGame
         public void Start()
         {
             Started = true;
-            PartialTurnTracker = new PartialTurnTracker(WhitePlayer, ClockManager.GetCurrentClock(), Board);
+            PartialTurnTracker = new PartialTurnTracker(WhitePlayer, ClockManager.GetCurrentClock(), Board.CurrentState);
         }
 
 

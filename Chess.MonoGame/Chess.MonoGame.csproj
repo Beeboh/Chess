@@ -54,6 +54,7 @@
     <Compile Include="ChessMatch.cs" />
     <Compile Include="ClockManager.cs" />
     <Compile Include="EnPassantManager.cs" />
+    <Compile Include="InCheckChecker.cs" />
     <Compile Include="Moves\BasicCaptureMove.cs" />
     <Compile Include="Factories\BishopFactory.cs" />
     <Compile Include="Factories\KingFactory.cs" />

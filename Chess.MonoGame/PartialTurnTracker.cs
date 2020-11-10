@@ -13,17 +13,17 @@ namespace Chess.MonoGame
 {
     public class PartialTurnTracker
     {
-        public PartialTurnTracker(Player player, ChessClock clock, ChessBoard board)
+        public PartialTurnTracker(Player player, ChessClock clock, BoardState boardstate)
         {
             Player = player;
             Clock = clock;
-            Board = board;
+            BoardState = boardstate;
             StartTime = Clock.Time;
         }
         private Player Player { get; }
         private TimeSpan StartTime { get; }
         private ChessClock Clock { get; }
-        private ChessBoard Board { get; }
+        private BoardState BoardState { get; }
         public ChessPiece SelectedPiece { get; private set; }
         public PartialTurn PartialTurn { get; private set; }
         public void SelectTile(Tile selectedtile)
@@ -34,16 +34,16 @@ namespace Chess.MonoGame
                 {
                     if (SelectedPiece != null)
                     {
-                        Board.CurrentState[SelectedPiece.Row, SelectedPiece.Column].SetTint(Color.White);
+                        BoardState[SelectedPiece.Row, SelectedPiece.Column].SetTint(Color.White);
                     }
                     SelectedPiece = selectedtile.Piece;
                     selectedtile.SetTint(Color.LightBlue);
                 }
                 else if (SelectedPiece != null)
                 {
-                    ReadOnlyCollection<Move> CandidateMoves = SelectedPiece.GetCandidateMoves(Board.CurrentState);
-                    BoardState CopiedBoard = Board.CurrentState.GetCopy();
-                    ChessPiece CopiedSelectedPiece = Board.CurrentState[SelectedPiece.Row, SelectedPiece.Column].Piece;
+                    ReadOnlyCollection<Move> CandidateMoves = SelectedPiece.GetCandidateMoves(BoardState);
+                    BoardState CopiedBoard = BoardState.GetCopy();
+                    ChessPiece CopiedSelectedPiece = BoardState[SelectedPiece.Row, SelectedPiece.Column].Piece;
                     ReadOnlyCollection<Move> CopiedCandidateMoves = CopiedSelectedPiece.GetCandidateMoves(CopiedBoard);
 
                     List<Move> CopiedNonLegalMoves = new List<Move>();
@@ -101,14 +101,17 @@ namespace Chess.MonoGame
                     Move SelectedMove = LegalMoves.Where(m => m.Piece == SelectedPiece && m.TargetTile == selectedtile).FirstOrDefault();
                     if (SelectedMove != null)
                     {
-                        Board.Move(SelectedMove);
+                        BoardState[SelectedPiece.Row, SelectedPiece.Column].SetTint(Color.White);
+                        SelectedMove.Execute();
                         PartialTurn = new PartialTurn(Player, SelectedMove, StartTime, Clock.Time);
+                        
                     }
                     else
                     {
-                        Board.CurrentState[SelectedPiece.Row, SelectedPiece.Column].SetTint(Color.White);
+                        BoardState[SelectedPiece.Row, SelectedPiece.Column].SetTint(Color.White);
                         SelectedPiece = null;
                     }
+                    
                 }
             }
         }
