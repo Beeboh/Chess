@@ -11,7 +11,11 @@ namespace Chess.MonoGame.Factories
 {
     public class BishopFactory : ChessPieceFactory
     {
-        public override ChessPiece GetPiece(Alliance alliance, Texture2D texture)
+        public BishopFactory(Alliance alliance, Texture2D texture) : base(alliance, texture)
+        {
+
+        }
+        public override ChessPiece GetPiece(int row, int column)
         {
             IPieceBehaviour UpLeftMovement = new BasicMovementBehaviour(-1, -1, 1000000);
             IPieceBehaviour UpRightMovement = new BasicMovementBehaviour(1, -1, 1000000);
@@ -23,7 +27,7 @@ namespace Chess.MonoGame.Factories
             IPieceBehaviour DownRightCapture = new BasicCaptureBehaviour(1, 1, 1000000);
             IPieceBehaviour[] pieceBehaviours = new IPieceBehaviour[] { UpLeftMovement, UpRightMovement, DownLeftMovement, DownRightMovement, UpLeftCapture, UpRightCapture, DownLeftCapture, DownRightCapture };
 
-            return new Bishop(alliance, texture, pieceBehaviours, false);
+            return new Bishop(Alliance, Texture, pieceBehaviours, row, column, false, 3, this);
         }
     }
 }

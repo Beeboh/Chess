@@ -43,7 +43,7 @@ namespace Chess.MonoGame
                 {
                     ReadOnlyCollection<Move> CandidateMoves = SelectedPiece.GetCandidateMoves(BoardState);
                     BoardState CopiedBoard = BoardState.GetCopy();
-                    ChessPiece CopiedSelectedPiece = BoardState[SelectedPiece.Row, SelectedPiece.Column].Piece;
+                    ChessPiece CopiedSelectedPiece = CopiedBoard[SelectedPiece.Row, SelectedPiece.Column].Piece;
                     ReadOnlyCollection<Move> CopiedCandidateMoves = CopiedSelectedPiece.GetCandidateMoves(CopiedBoard);
 
                     List<Move> CopiedNonLegalMoves = new List<Move>();

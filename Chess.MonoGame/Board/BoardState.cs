@@ -38,7 +38,7 @@ namespace Chess.MonoGame.Board
             List<Tile> CopiedTiles = new List<Tile>();
             foreach(Tile tile in Tiles)
             {
-                Tile CopiedTile = new Tile(tile.Column, tile.Row, tile.tileColor, tile.Texture);
+                Tile CopiedTile = tile.GetCopy();
                 if (!tile.IsVacant)
                 {
                     ChessPiece CopiedPiece = tile.Piece.GetCopy();

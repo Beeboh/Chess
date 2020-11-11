@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Chess.MonoGame.Behaviours;
 using Chess.MonoGame.Board;
+using Chess.MonoGame.Factories;
 using Chess.MonoGame.Moves;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -13,7 +14,7 @@ namespace Chess.MonoGame.Pieces
 {
     public abstract class ChessPiece
     {
-        public ChessPiece(Alliance alliance, Texture2D texture, IEnumerable<IPieceBehaviour> pieceBehaviours, bool hasmoved)
+        public ChessPiece(Alliance alliance, Texture2D texture, IEnumerable<IPieceBehaviour> pieceBehaviours, bool hasmoved, int materialValue, ChessPieceFactory factory)
         {
             Row = 0;
             Column = 0;
@@ -21,8 +22,10 @@ namespace Chess.MonoGame.Pieces
             Texture = texture;
             PieceBehaviours = pieceBehaviours;
             HasMoved = hasmoved;
+            MaterialValue = materialValue;
+            Factory = factory;
         }
-        public ChessPiece(Alliance alliance, Texture2D texture, IEnumerable<IPieceBehaviour> pieceBehaviours, int row, int column, bool hasmoved)
+        public ChessPiece(Alliance alliance, Texture2D texture, IEnumerable<IPieceBehaviour> pieceBehaviours, int row, int column, bool hasmoved, int materialValue, ChessPieceFactory factory)
         {
             Row = row;
             Column = column;
@@ -30,6 +33,8 @@ namespace Chess.MonoGame.Pieces
             Texture = texture;
             PieceBehaviours = pieceBehaviours;
             HasMoved = hasmoved;
+            MaterialValue = materialValue;
+            Factory = factory;
         }
 
         public int Row { get; private set; }
@@ -38,6 +43,8 @@ namespace Chess.MonoGame.Pieces
         public Texture2D Texture { get; }
         protected IEnumerable<IPieceBehaviour> PieceBehaviours { get; }
         public bool HasMoved { get; private set; }
+        public int MaterialValue { get; }
+        protected ChessPieceFactory Factory { get; }
 
         public void InitializePosition(int row, int column)
         {
@@ -67,6 +74,9 @@ namespace Chess.MonoGame.Pieces
             }
             return CandidateMoves.AsReadOnly();
         }
-        public abstract ChessPiece GetCopy();
+        public ChessPiece GetCopy()
+        {
+            return Factory.GetPiece(Row, Column);
+        }
     }
 }

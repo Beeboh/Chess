@@ -9,19 +9,19 @@ using System.Threading.Tasks;
 
 namespace Chess.MonoGame.Board
 {
-    public class Tile
+    public abstract class Tile
     {
-        public Tile(int column, int row, TileColor tilecolor, Texture2D texture)
+        public Tile(int row, int column, TileColor tilecolor, Texture2D texture)
         {
-            Column = column;
             Row = row;
+            Column = column;
             tileColor = tilecolor;
             Texture = texture;
             Tint = Color.White;
         }
         public int Column { get; }
         public int Row { get; }
-        public ChessPiece Piece { get; private set; }
+        public ChessPiece Piece { get; protected set; }
         public TileColor tileColor { get; }
         public Texture2D Texture { get; }
         public bool IsVacant => Piece == null;
@@ -36,11 +36,13 @@ namespace Chess.MonoGame.Board
             if (HasMoved)
             {
                 Piece.MovePosition(Row, Column);
+                OnPieceMoved();
             }
             else
             {
                 Piece.InitializePosition(Row, Column);
             }
+            
         }
         public void DetachPiece()
         {
@@ -51,5 +53,7 @@ namespace Chess.MonoGame.Board
         {
             Tint = color;
         }
+        protected abstract void OnPieceMoved();
+        public abstract Tile GetCopy();
     }
 }

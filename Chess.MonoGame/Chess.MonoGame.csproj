@@ -44,9 +44,12 @@
     <Compile Include="Alliance.cs" />
     <Compile Include="Behaviours\BasicCaptureBehaviour.cs" />
     <Compile Include="Behaviours\CaptureBehaviour.cs" />
+    <Compile Include="Behaviours\CastleBehaviour.cs" />
     <Compile Include="Behaviours\EnpassantBehaviour.cs" />
     <Compile Include="Behaviours\MovementBehaviour.cs" />
+    <Compile Include="Board\BasicTile.cs" />
     <Compile Include="Board\ChessBoard.cs" />
+    <Compile Include="Board\PawnPromotionTile.cs" />
     <Compile Include="Builders\ChessBoardBuilder.cs" />
     <Compile Include="Builders\ChessBoardShop.cs" />
     <Compile Include="Builders\StandardBoardBuilder.cs" />
@@ -54,6 +57,9 @@
     <Compile Include="ChessMatch.cs" />
     <Compile Include="ClockManager.cs" />
     <Compile Include="EnPassantManager.cs" />
+    <Compile Include="Factories\BasicTileFactory.cs" />
+    <Compile Include="Factories\PawnPromotionTileFactory.cs" />
+    <Compile Include="Factories\TileFactory.cs" />
     <Compile Include="InCheckChecker.cs" />
     <Compile Include="Moves\BasicCaptureMove.cs" />
     <Compile Include="Factories\BishopFactory.cs" />
@@ -64,6 +70,7 @@
     <Compile Include="Factories\RookFactory.cs" />
     <Compile Include="Behaviours\IEnPassantable.cs" />
     <Compile Include="Moves\CaptureMove.cs" />
+    <Compile Include="Moves\CastleMove.cs" />
     <Compile Include="Moves\EnPassantableStartingMove.cs" />
     <Compile Include="Moves\EnPassantMove.cs" />
     <Compile Include="Moves\MovementMove.cs" />

@@ -1,4 +1,5 @@
 ﻿using Chess.MonoGame.Board;
+using Chess.MonoGame.Builders;
 using Chess.MonoGame.Factories;
 using Chess.MonoGame.Moves;
 using Chess.MonoGame.Pieces;
@@ -46,8 +47,10 @@ namespace Chess.MonoGame
         protected override void Initialize()
         {
             base.Initialize();
-            ChessBoardFactory StandardBoardFactory = new StandardBoardFactory(BoardTextures, PieceTextures);
-            ChessBoard Board = StandardBoardFactory.GetBoard(Point.Zero, 100, 100);
+            ChessBoardBuilder standardBoardBuilder = new StandardBoardBuilder(BoardTextures, PieceTextures);
+            ChessBoardShop BoardShop = new ChessBoardShop();
+            ChessBoard Board = BoardShop.GetBoard(Point.Zero, 100, 100, standardBoardBuilder);
+            
             Player WhitePlayer = new Player("Player1", Alliance.White);
             Player BlackPlayer = new Player("Player2", Alliance.Black);
             Match = new ChessMatch(Board, WhitePlayer, BlackPlayer);
@@ -140,7 +143,6 @@ namespace Chess.MonoGame
                     spriteBatch.Draw(tile.Piece.Texture, tileposition, Color.White);
                 }
             }
-            //spriteBatch.Draw(rook_black, new Rectangle(0,0,Board.TileWidth,Board.TileHeight),Color.White);
             spriteBatch.End();
             base.Draw(gameTime);
         }

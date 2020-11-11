@@ -41,11 +41,11 @@ namespace Chess.MonoGame.Behaviours
 
         public int MaxSteps { get; }
 
-        private int ReducedBaseStepX { get; }
+        protected int ReducedBaseStepX { get; }
 
-        private int ReducedBaseStepY { get; }
+        protected int ReducedBaseStepY { get; }
 
-        private int ReductionRatio { get; }
+        protected int ReductionRatio { get; }
 
         public abstract ReadOnlyCollection<Move> GetCandidateMoves(BoardState board, ChessPiece piece);
         protected ReadOnlyCollection<Tile> GetCandidateTiles(BoardState board, ChessPiece piece)

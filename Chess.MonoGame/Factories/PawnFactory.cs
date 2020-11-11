@@ -11,10 +11,14 @@ namespace Chess.MonoGame.Factories
 {
     public class PawnFactory : ChessPieceFactory
     {
-        public override ChessPiece GetPiece(Alliance alliance, Texture2D texture)
+        public PawnFactory(Alliance alliance, Texture2D texture) : base(alliance, texture)
+        {
+
+        }
+        public override ChessPiece GetPiece(int row, int column)
         {
             int Ydirection;
-            if (alliance == Alliance.White)
+            if (Alliance == Alliance.White)
             {
                 Ydirection = -1;
             }
@@ -29,7 +33,7 @@ namespace Chess.MonoGame.Factories
             IPieceBehaviour diagonalLeftEnPassant = new EnpassantBehaviour(-1, Ydirection, -1, 0);
             IPieceBehaviour diagonalRightEnPassant = new EnpassantBehaviour(1, Ydirection, 1, 0);
             IPieceBehaviour[] pieceBehaviours = new IPieceBehaviour[] { forwardMovement, diagonalLeftCapture, diagonalRightCapture, startingDoubleMove, diagonalLeftEnPassant, diagonalRightEnPassant };
-            return new Pawn(alliance, texture, pieceBehaviours, false, false);
+            return new Pawn(Alliance, Texture, pieceBehaviours, row, column, false, false, 1, this);
         }
     }
 }

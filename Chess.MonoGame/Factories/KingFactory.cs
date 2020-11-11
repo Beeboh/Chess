@@ -11,7 +11,11 @@ namespace Chess.MonoGame.Factories
 {
     public class KingFactory : ChessPieceFactory
     {
-        public override ChessPiece GetPiece(Alliance alliance, Texture2D texture)
+        public KingFactory(Alliance alliance, Texture2D texture) : base(alliance, texture)
+        {
+
+        }
+        public override ChessPiece GetPiece(int row, int column)
         {
             IPieceBehaviour UpMovement = new BasicMovementBehaviour(0, -1, 1);
             IPieceBehaviour RightMovement = new BasicMovementBehaviour(1, 0, 1);
@@ -29,10 +33,12 @@ namespace Chess.MonoGame.Factories
             IPieceBehaviour DownRightCapture = new BasicCaptureBehaviour(1, 1, 1);
             IPieceBehaviour DownLeftCapture = new BasicCaptureBehaviour(-1, 1, 1);
             IPieceBehaviour UpLeftCapture = new BasicCaptureBehaviour(-1, -1, 1);
+            IPieceBehaviour ShortCastle = new CastleBehaviour(2, 0, 1, 0, 3, -2, 0);
+            IPieceBehaviour LongCastle = new CastleBehaviour(-2, 0, -1, 0, 4, 3, 0);
 
             IPieceBehaviour[] pieceBehaviours = new IPieceBehaviour[] {UpMovement, RightMovement, DownMovement, LeftMovement, UpRightMovement, DownRightMovement, DownLeftMovement, UpLeftMovement,
-                                                                        UpCapture, RightCapture, DownCapture, LeftCapture, UpRightCapture, DownRightCapture, DownLeftCapture, UpLeftCapture};
-            return new King(alliance, texture, pieceBehaviours, false);
+                                                                        UpCapture, RightCapture, DownCapture, LeftCapture, UpRightCapture, DownRightCapture, DownLeftCapture, UpLeftCapture, ShortCastle, LongCastle};
+            return new King(Alliance, Texture, pieceBehaviours, row, column, false, 0, this);
         }
     }
 }

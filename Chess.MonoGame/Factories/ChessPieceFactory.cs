@@ -10,7 +10,18 @@ namespace Chess.MonoGame.Factories
 {
     public abstract class ChessPieceFactory
     {
-        public abstract ChessPiece GetPiece(Alliance alliance, Texture2D texture);
+        public ChessPieceFactory(Alliance alliance, Texture2D texture)
+        {
+            Alliance = alliance;
+            Texture = texture;
+        }
+        protected Alliance Alliance { get; }
+        protected Texture2D Texture { get; }
+        public abstract ChessPiece GetPiece(int row, int column);
+        public ChessPiece GetPiece()
+        {
+            return GetPiece(0, 0);
+        }
 
     }
 }

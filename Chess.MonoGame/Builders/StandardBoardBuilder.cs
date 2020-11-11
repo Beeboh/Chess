@@ -15,57 +15,76 @@ namespace Chess.MonoGame.Builders
         public StandardBoardBuilder(BoardTexturePack boardTextures, PieceTexturePack pieceTextures)
         {
             BoardTextures = boardTextures;
-            PieceTextures = PieceTextures;
-            PawnFactory = new PawnFactory();
-            KnightFactory = new KnightFactory();
-            BishopFactory = new BishopFactory();
-            RookFactory = new RookFactory();
-            QueenFactory = new QueenFactory();
-            KingFactory = new KingFactory();
+            PieceTextures = pieceTextures;
+            WhitePawnFactory = new PawnFactory(Alliance.White, pieceTextures.WhitePawn);
+            WhiteKnightFactory = new KnightFactory(Alliance.White, pieceTextures.WhiteKnight);
+            WhiteBishopFactory = new BishopFactory(Alliance.White, pieceTextures.WhiteBishop);
+            WhiteRookFactory = new RookFactory(Alliance.White, pieceTextures.WhiteRook);
+            WhiteQueenFactory = new QueenFactory(Alliance.White, pieceTextures.WhiteQueen);
+            WhiteKingFactory = new KingFactory(Alliance.White, pieceTextures.WhiteKing);
+            BlackPawnFactory = new PawnFactory(Alliance.Black, pieceTextures.BlackPawn);
+            BlackKnightFactory = new KnightFactory(Alliance.Black, pieceTextures.BlackKnight);
+            BlackBishopFactory = new BishopFactory(Alliance.Black, pieceTextures.BlackBishop);
+            BlackRookFactory = new RookFactory(Alliance.Black, pieceTextures.BlackRook);
+            BlackQueenFactory = new QueenFactory(Alliance.Black, pieceTextures.BlackQueen);
+            BlackKingFactory = new KingFactory(Alliance.Black, pieceTextures.BlackKing); 
+            BasicTileFactory = new BasicTileFactory();
+            WhitePawnPromotionTileFactory = new PawnPromotionTileFactory(Alliance.White, WhiteQueenFactory);
+            BlackPawnPromotionTileFactory = new PawnPromotionTileFactory(Alliance.Black, BlackQueenFactory);
         }
         private BoardTexturePack BoardTextures { get; }
         private PieceTexturePack PieceTextures { get; }
-        private ChessPieceFactory PawnFactory { get; }
-        private ChessPieceFactory KnightFactory { get; }
-        private ChessPieceFactory BishopFactory { get; }
-        private ChessPieceFactory RookFactory { get; }
-        private ChessPieceFactory QueenFactory { get; }
-        private ChessPieceFactory KingFactory { get; }
+        private ChessPieceFactory WhitePawnFactory { get; }
+        private ChessPieceFactory WhiteKnightFactory { get; }
+        private ChessPieceFactory WhiteBishopFactory { get; }
+        private ChessPieceFactory WhiteRookFactory { get; }
+        private ChessPieceFactory WhiteQueenFactory { get; }
+        private ChessPieceFactory WhiteKingFactory { get; }
+        private ChessPieceFactory BlackPawnFactory { get; }
+        private ChessPieceFactory BlackKnightFactory { get; }
+        private ChessPieceFactory BlackBishopFactory { get; }
+        private ChessPieceFactory BlackRookFactory { get; }
+        private ChessPieceFactory BlackQueenFactory { get; }
+        private ChessPieceFactory BlackKingFactory { get; }
+
+        private TileFactory BasicTileFactory { get; }
+        private TileFactory WhitePawnPromotionTileFactory { get; }
+        private TileFactory BlackPawnPromotionTileFactory { get; }
         public override void AddPieces()
         {
-            ChessPiece aPawn_white = PawnFactory.GetPiece(Alliance.White, PieceTextures.WhitePawn);
-            ChessPiece bPawn_white = PawnFactory.GetPiece(Alliance.White, PieceTextures.WhitePawn);
-            ChessPiece cPawn_white = PawnFactory.GetPiece(Alliance.White, PieceTextures.WhitePawn);
-            ChessPiece dPawn_white = PawnFactory.GetPiece(Alliance.White, PieceTextures.WhitePawn);
-            ChessPiece ePawn_white = PawnFactory.GetPiece(Alliance.White, PieceTextures.WhitePawn);
-            ChessPiece fPawn_white = PawnFactory.GetPiece(Alliance.White, PieceTextures.WhitePawn);
-            ChessPiece gPawn_white = PawnFactory.GetPiece(Alliance.White, PieceTextures.WhitePawn);
-            ChessPiece hPawn_white = PawnFactory.GetPiece(Alliance.White, PieceTextures.WhitePawn);
-            ChessPiece bKnight_white = KnightFactory.GetPiece(Alliance.White, PieceTextures.WhiteKnight);
-            ChessPiece gKnight_white = KnightFactory.GetPiece(Alliance.White, PieceTextures.WhiteKnight);
-            ChessPiece cBishop_white = BishopFactory.GetPiece(Alliance.White, PieceTextures.WhiteBishop);
-            ChessPiece fBishop_white = BishopFactory.GetPiece(Alliance.White, PieceTextures.WhiteBishop);
-            ChessPiece aRook_white = RookFactory.GetPiece(Alliance.White, PieceTextures.WhiteRook);
-            ChessPiece hRook_white = RookFactory.GetPiece(Alliance.White, PieceTextures.WhiteRook);
-            ChessPiece queen_white = QueenFactory.GetPiece(Alliance.White, PieceTextures.WhiteQueen);
-            ChessPiece king_white = KingFactory.GetPiece(Alliance.White, PieceTextures.WhiteKing);
+            ChessPiece aPawn_white = WhitePawnFactory.GetPiece();
+            ChessPiece bPawn_white = WhitePawnFactory.GetPiece();
+            ChessPiece cPawn_white = WhitePawnFactory.GetPiece();
+            ChessPiece dPawn_white = WhitePawnFactory.GetPiece();
+            ChessPiece ePawn_white = WhitePawnFactory.GetPiece();
+            ChessPiece fPawn_white = WhitePawnFactory.GetPiece();
+            ChessPiece gPawn_white = WhitePawnFactory.GetPiece();
+            ChessPiece hPawn_white = WhitePawnFactory.GetPiece();
+            ChessPiece bKnight_white = WhiteKnightFactory.GetPiece();
+            ChessPiece gKnight_white = WhiteKnightFactory.GetPiece();
+            ChessPiece cBishop_white = WhiteBishopFactory.GetPiece();
+            ChessPiece fBishop_white = WhiteBishopFactory.GetPiece();
+            ChessPiece aRook_white = WhiteRookFactory.GetPiece();
+            ChessPiece hRook_white = WhiteRookFactory.GetPiece();
+            ChessPiece queen_white = WhiteQueenFactory.GetPiece();
+            ChessPiece king_white = WhiteKingFactory.GetPiece();
 
-            ChessPiece aPawn_black = PawnFactory.GetPiece(Alliance.Black, PieceTextures.BlackPawn);
-            ChessPiece bPawn_black = PawnFactory.GetPiece(Alliance.Black, PieceTextures.BlackPawn);
-            ChessPiece cPawn_black = PawnFactory.GetPiece(Alliance.Black, PieceTextures.BlackPawn);
-            ChessPiece dPawn_black = PawnFactory.GetPiece(Alliance.Black, PieceTextures.BlackPawn);
-            ChessPiece ePawn_black = PawnFactory.GetPiece(Alliance.Black, PieceTextures.BlackPawn);
-            ChessPiece fPawn_black = PawnFactory.GetPiece(Alliance.Black, PieceTextures.BlackPawn);
-            ChessPiece gPawn_black = PawnFactory.GetPiece(Alliance.Black, PieceTextures.BlackPawn);
-            ChessPiece hPawn_black = PawnFactory.GetPiece(Alliance.Black, PieceTextures.BlackPawn);
-            ChessPiece bKnight_black = KnightFactory.GetPiece(Alliance.Black, PieceTextures.BlackKnight);
-            ChessPiece gKnight_black = KnightFactory.GetPiece(Alliance.Black, PieceTextures.BlackKnight);
-            ChessPiece cBishop_black = BishopFactory.GetPiece(Alliance.Black, PieceTextures.BlackBishop);
-            ChessPiece fBishop_black = BishopFactory.GetPiece(Alliance.Black, PieceTextures.BlackBishop);
-            ChessPiece aRook_black = RookFactory.GetPiece(Alliance.Black, PieceTextures.BlackRook);
-            ChessPiece hRook_black = RookFactory.GetPiece(Alliance.Black, PieceTextures.BlackRook);
-            ChessPiece queen_black = QueenFactory.GetPiece(Alliance.Black, PieceTextures.BlackQueen);
-            ChessPiece king_black = KingFactory.GetPiece(Alliance.Black, PieceTextures.BlackKing);
+            ChessPiece aPawn_black = BlackPawnFactory.GetPiece();
+            ChessPiece bPawn_black = BlackPawnFactory.GetPiece();
+            ChessPiece cPawn_black = BlackPawnFactory.GetPiece();
+            ChessPiece dPawn_black = BlackPawnFactory.GetPiece();
+            ChessPiece ePawn_black = BlackPawnFactory.GetPiece();
+            ChessPiece fPawn_black = BlackPawnFactory.GetPiece();
+            ChessPiece gPawn_black = BlackPawnFactory.GetPiece();
+            ChessPiece hPawn_black = BlackPawnFactory.GetPiece();
+            ChessPiece bKnight_black = BlackKnightFactory.GetPiece();
+            ChessPiece gKnight_black = BlackKnightFactory.GetPiece();
+            ChessPiece cBishop_black = BlackBishopFactory.GetPiece();
+            ChessPiece fBishop_black = BlackBishopFactory.GetPiece();
+            ChessPiece aRook_black = BlackRookFactory.GetPiece();
+            ChessPiece hRook_black = BlackRookFactory.GetPiece();
+            ChessPiece queen_black = BlackQueenFactory.GetPiece();
+            ChessPiece king_black = BlackKingFactory.GetPiece();
 
             Board.CurrentState[0, 0].AttachPiece(aRook_black, false);
             Board.CurrentState[0, 1].AttachPiece(bKnight_black, false);
@@ -106,18 +125,31 @@ namespace Chess.MonoGame.Builders
 
         public override void CreateEmptyBoard(Point origin, int tileWidth, int tileHeight)
         {
+            TileFactory tileFactory = BasicTileFactory;
             List<Tile> tiles = new List<Tile>();
-            for (int i = 0; i < 8; i++)
+            for (int row = 0; row < 8; row++)
             {
-                for (int j = 0; j < 8; j++)
+                if (row == 0)
                 {
-                    if ((i + j) % 2 == 0)
+                    tileFactory = WhitePawnPromotionTileFactory;
+                }
+                else if(row == 7)
+                {
+                    tileFactory = BlackPawnPromotionTileFactory;
+                }
+                else
+                {
+                    tileFactory = BasicTileFactory;
+                }
+                for (int column = 0; column < 8; column++)
+                {
+                    if ((row + column) % 2 == 0)
                     {
-                        tiles.Add(new Tile(i, j, TileColor.LightSquare, BoardTextures.LightSquare));
+                        tiles.Add(tileFactory.GetTile(row, column, TileColor.LightSquare, BoardTextures.LightSquare));
                     }
                     else
                     {
-                        tiles.Add(new Tile(i, j, TileColor.DarkSquare, BoardTextures.DarkSquare));
+                        tiles.Add(tileFactory.GetTile(row, column, TileColor.DarkSquare, BoardTextures.DarkSquare));
                     }
                 }
             }
